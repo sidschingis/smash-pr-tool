@@ -2,12 +2,14 @@
 
 namespace App\Http;
 
+use App\GraphQL\Query\Query;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 
 class Request
 {
     public function sendRequest(
+        Query $query,
         string $token = "",
     ): string {
         $client = new Client(
@@ -16,39 +18,7 @@ class Request
             ]
         );
 
-        $query = '
-        query Sets ($playerId:ID!) {
-            player(id: $playerId) {
-              id
-              sets(perPage: 10, page: 0) {
-                nodes {
-                  id
-                  displayScore
-                  event {
-                    id
-                    name
-                    tournament {
-                      id
-                      name
-                    }
-                  }
-                }
-              }
-            }
-          }
-        ';
-
-        $variables = [
-            'playerId' => 1135316,
-        ];
-
-        $operation = "Sets";
-
-        $body = [
-            'query' => $query,
-            'operationName' => $operation,
-            'variables' => $variables,
-        ];
+        $body = $query->toBodyArray();
 
         $options = [
             'headers' => [

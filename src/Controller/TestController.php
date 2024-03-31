@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Http\Request;
+use App\Queries\Player\Sets;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,8 +18,12 @@ class TestController extends AbstractController
         $token = $this->getToken();
 
         $request = new Request();
+        $query = new Sets(playerId:1135316);
 
-        $response = $request->sendRequest(token: $token);
+        $response = $request->sendRequest(
+            query: $query,
+            token: $token,
+        );
 
         return new Response(
             '<html>
