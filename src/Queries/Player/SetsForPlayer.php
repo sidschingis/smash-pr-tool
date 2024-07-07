@@ -34,7 +34,13 @@ class SetsForPlayer extends AbstractQuery
             $displayScore  = $rawNode->displayScore ?? '';
             $startTime = $rawNode?->event?->tournament?->startAt ?? 0;
 
-            preg_match($winnerRegex, $displayScore, $matches);
+            $isMatch = preg_match($winnerRegex, $displayScore, $matches);
+            if (!$isMatch) {
+                /**
+                 * DQs
+                 */
+                continue;
+            }
             [$match, $p1Name, $p1Wins, $p2Name, $p2Wins] = $matches;
 
             $winnerName = ((int) $p1Wins > (int) $p2Wins) ? $p1Name : $p2Name;
@@ -59,7 +65,9 @@ class SetsForPlayer extends AbstractQuery
             $newSet->setEventName($rawNode?->event?->name ?? '');
             $newSet->setTournamentName($rawNode?->event?->tournament?->name ?? '');
 
-            $sets[] = $newSet;
+            $idEvent = $rawNode?->event?->id ?? 0;
+
+            $sets[$idEvent][] = $newSet;
         }
 
         return $sets;
@@ -70,6 +78,7 @@ class SetsForPlayer extends AbstractQuery
         protected int $perPage = 100,
         protected int $page = 0,
         protected array $tournamentIds = [],
+        protected int $startTimeStamp = 0,
     ) {
 
     }
@@ -83,6 +92,7 @@ class SetsForPlayer extends AbstractQuery
         $playerId = $this->playerId;
         $perPage = $this->perPage;
         $page = $this->page;
+        $startTimeStamp = $this->startTimeStamp;
         $tournamentIds = implode(",", $this->tournamentIds);
 
         return <<<END
@@ -92,7 +102,8 @@ class SetsForPlayer extends AbstractQuery
                 sets(perPage: $perPage, page: $page, filters: {
                   isEventOnline: false,
                   showByes: false,
-                  tournamentIds: [$tournamentIds],
+                  tournamentIds: [$tournamentIds]
+                  updatedAfter: $startTimeStamp
                 }) {
                   nodes {
                     id

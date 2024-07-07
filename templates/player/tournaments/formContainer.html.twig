@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Player Tournaments{% endblock %}
+
+{% block body %}
+    <h2>Tournaments for {{ playerId }}</h2>
+
+    {{ form(form) }}
+
+    <pre>
+    {{ debug }}
+    </pre>
+{% endblock %}

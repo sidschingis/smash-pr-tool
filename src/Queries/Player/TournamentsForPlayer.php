@@ -64,7 +64,7 @@ class TournamentsForPlayer extends AbstractQuery
                       page: $page,
                       filter: {
                         videogameId: $videogameId,
-                        past: true
+                        past: true,
                       }
                     }
                   ) {
