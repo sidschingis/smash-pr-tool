@@ -2,6 +2,7 @@
 
 namespace App\Queries\Player;
 
+use App\ControllerData\TournamentData;
 use App\Enum\GameId;
 use App\GraphQL\Query\AbstractQuery;
 use App\Objects\Tournament;
@@ -11,11 +12,7 @@ class TournamentsForPlayer extends AbstractQuery
 {
     private const OPERATION = "Sets";
 
-
-    /**
-     * @return Tournament[]
-     */
-    public static function JsonToTournaments(string $json): array
+    public static function JsonToTournamentData(string $json): TournamentData
     {
         $tournaments = [];
 
@@ -31,7 +28,10 @@ class TournamentsForPlayer extends AbstractQuery
             );
         }
 
-        return $tournaments;
+        return new TournamentData(
+            name: $data?->data?->player?->gamerTag ?? '',
+            tournaments: $tournaments,
+        );
     }
 
     public function __construct(
@@ -56,6 +56,7 @@ class TournamentsForPlayer extends AbstractQuery
         query Sets {
             player(id: $playerId) {
                 id
+                gamerTag
                 user {
                   tournaments (
                     query: {

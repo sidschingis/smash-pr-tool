@@ -1,3 +1,8 @@
 body {
     background-color: skyblue;
 }
+
+/* Tournament */
+#tournamentIds {
+    display: grid;
+}

@@ -29,7 +29,7 @@ class TestController extends AbstractController
         $token = $this->getToken();
 
         $request = new Request();
-        $query = new SetsForPlayer(playerId:1135316);
+        $query = new SetsForPlayer(playerId: 1135316);
 
         $response = $request->sendRequest(
             query: $query,
@@ -61,8 +61,9 @@ class TestController extends AbstractController
 
         $request = new Request();
         $query = new SetsForPlayer(
-            playerId:$idPlayer,
+            playerId: $idPlayer,
             tournamentIds: $tournamentIds,
+            startTimeStamp: $startTime,
         );
 
         $response = $request->sendRequest(
@@ -70,12 +71,7 @@ class TestController extends AbstractController
             token: $token,
         );
 
-        $sets = SetsForPlayer::JsonToSets($response);
-        foreach ($sets as $idEvent => $byEvent) {
-            foreach ($byEvent as $set) {
-                $form = $this->createForm(SetForm::class, $set);
-            }
-        }
+        $sets = SetsForPlayer::JsonToSetData($response);
         $debug = var_export($sets, true);
 
         return new Response(
@@ -98,14 +94,15 @@ class TestController extends AbstractController
         $token = $this->getToken();
 
         $request = new Request();
-        $query = new TournamentsForPlayer(playerId:$idPlayer);
+        $query = new TournamentsForPlayer(playerId: $idPlayer);
 
         $response = $request->sendRequest(
             query: $query,
             token: $token,
         );
 
-        $tournaments = TournamentsForPlayer::JsonToTournaments($response);
+        $tournamentData = TournamentsForPlayer::JsonToTournamentData($response);
+        $tournaments = $tournamentData->tournaments;
         $debug = var_export($tournaments, true);
 
         $route = $this->generateUrl(
@@ -115,7 +112,6 @@ class TestController extends AbstractController
             ],
         );
 
-
         $choices = [];
         foreach ($tournaments as $tournament) {
             $id = $tournament->id;
@@ -123,7 +119,6 @@ class TestController extends AbstractController
 
             $choices[$label] = $id;
         }
-
 
         $form = $this->createForm(
             TournamentForm::class,
@@ -135,14 +130,11 @@ class TestController extends AbstractController
             ],
         );
 
-
-
-
         return $this->render(
             'player/tournaments/formContainer.html.twig',
             [
                 'debug' => $debug,
-                'playerId' => $idPlayer,
+                'playerName' => $tournamentData->name,
                 'tournaments' => $tournaments,
                 'form' => $form,
                 'route' => $route,
