@@ -80,7 +80,6 @@ class SetsForPlayer extends AbstractQuery
         protected array $tournamentIds = [],
         protected int $startTimeStamp = 0,
     ) {
-
     }
 
     /**

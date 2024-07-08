@@ -39,7 +39,6 @@ class TournamentsForPlayer extends AbstractQuery
         protected int $perPage = 50,
         protected int $page = 0,
     ) {
-
     }
 
     /**
