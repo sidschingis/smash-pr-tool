@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Player Tournaments{% endblock %}
+
+{% block body %}
+    <h2>Sets for {{ viewData.playerName }}</h2>
+
+    {% for eventData in viewData.eventInfos %}
+    <h3>{{ eventData.tournamentName }} {{ eventData.eventName }}</h3>
+    {{ form(eventData.form) }}
+    {% endfor %}
+
+    <pre>
+    {{ debug }}
+    </pre>
+{% endblock %}

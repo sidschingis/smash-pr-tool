@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\ControllerData\EventData;
+use App\Forms\EventForm;
 use App\Forms\SetForm;
 use App\Forms\TournamentForm;
 use App\Http\Request;
@@ -72,19 +74,53 @@ class TestController extends AbstractController
         );
 
         $sets = SetsForPlayer::JsonToSetData($response);
+
+        $eventInfos = [];
+
+        foreach ($sets->eventInfos as $eventData) {
+            $form = $this->createForm(
+                EventForm::class,
+                options: [
+                    'data' => [
+                        'action' => '',
+                        'eventData' => $eventData,
+                    ],
+                ],
+            )->createView();
+
+            $eventInfos[] = new class($eventData, $form) extends EventData
+            {
+                public function __construct(
+                    EventData $eventData,
+                    public $form,
+                ) {
+                    foreach (get_object_vars($eventData) as $key => $value) {
+                        $this->$key = $value;
+                    }
+                }
+            };
+        }
+
+        $viewData = new class(
+            $sets->playerName,
+            $eventInfos,
+        )
+        {
+            public function __construct(
+                public string $playerName,
+                public array $eventInfos,
+            ) {
+            }
+        };
+
         $debug = var_export($sets, true);
 
-        return new Response(
-            <<<EOD
-            <html>
-            <body>
-            <pre> $debug
-            </pre>
-            <pre> $response
-            </pre>
-            </body>
-            </html>
-            EOD
+        return $this->render(
+            'player/sets/setView.html.twig',
+            [
+                'debug' => $debug,
+                'viewData' => $viewData,
+            ],
         );
     }
 
@@ -139,19 +175,6 @@ class TestController extends AbstractController
                 'form' => $form,
                 'route' => $route,
             ],
-        );
-
-        return new Response(
-            <<<EOD
-            <html>
-            <body>
-            <pre> $debug
-            </pre>
-            <pre> $response
-            </pre>
-            </body>
-            </html>
-            EOD
         );
     }
 
