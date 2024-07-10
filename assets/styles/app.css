@@ -1,8 +1,44 @@
 body {
-    background-color: skyblue;
+    background-color: black;
+    color: white;
+}
+
+form label {
+    cursor: pointer;
+}
+
+form button {
+    margin-top: 10px;
+}
+
+.d-flex-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.d-flex-row:hover {
+    background-color: red;
+}
+
+.d-flex-row label {
+    flex-grow: 1;
+}
+
+button:hover {
+    background-color: red;
+}
+
+.d-grid {
+    display: grid;
 }
 
 /* Tournament */
 #tournamentIds {
     display: grid;
+}
+
+/* Sets */
+.set-container {
+    display: flex;
+    flex-flow: column;
 }

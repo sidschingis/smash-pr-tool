@@ -3,14 +3,23 @@
 {% block title %}Player Tournaments{% endblock %}
 
 {% block body %}
-    <h2>Sets for {{ viewData.playerName }}</h2>
+    <h2>Import sets for {{ playerName }}</h2>
 
-    {% for eventData in viewData.eventInfos %}
-    <h3>{{ eventData.tournamentName }} {{ eventData.eventName }}</h3>
-    {{ form(eventData.form) }}
-    {% endfor %}
-
-    <pre>
-    {{ debug }}
-    </pre>
+    <form class="d-grid" action="{{action}}" method="post">
+        <input type="hidden" name="playerId" value="{{playerId}}">
+        <div>
+            {% for eventData in eventInfos %}
+            <h3 class="d-flex-row">
+                <label for="eventIds_{{ eventData.eventId }}">{{ eventData.tournamentName }} {{ eventData.eventName }}</label>
+                <input type="checkbox" id="eventIds_{{ eventData.eventId }}" name="eventIds[]" value="{{ eventData.eventId }}">
+            </h3>
+            <div class="set-container">
+                {% for sets in eventData.sets %}
+                <div>{{sets.displayScore}}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    <button type="submit" id="go" name="go">Import Sets</button>
+    </form>
 {% endblock %}

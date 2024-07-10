@@ -21,7 +21,7 @@ class Set
     #[ORM\Column]
     private ?int $loserId = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 50)]
     private ?string $displayScore = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

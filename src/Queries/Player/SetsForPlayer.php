@@ -24,6 +24,7 @@ class SetsForPlayer extends AbstractQuery
 
         return new SetData(
             playerName: $data?->data?->player?->gamerTag ?? '',
+            playerId: $data?->data?->player?->id ?? 0,
             eventInfos: $eventInfos,
         );
     }
@@ -103,6 +104,7 @@ class SetsForPlayer extends AbstractQuery
         protected int $perPage = 100,
         protected int $page = 0,
         protected array $tournamentIds = [],
+        protected array $eventIds = [],
         protected int $startTimeStamp = 0,
     ) {
     }
@@ -118,6 +120,7 @@ class SetsForPlayer extends AbstractQuery
         $page = $this->page;
         $startTimeStamp = $this->startTimeStamp;
         $tournamentIds = implode(",", $this->tournamentIds);
+        $eventIds = implode(",", $this->eventIds);
 
         return <<<END
         query Sets{
@@ -127,8 +130,9 @@ class SetsForPlayer extends AbstractQuery
                 sets(perPage: $perPage, page: $page, filters: {
                   isEventOnline: false,
                   showByes: false,
-                  tournamentIds: [$tournamentIds]
-                  updatedAfter: $startTimeStamp
+                  tournamentIds: [$tournamentIds],
+                  eventIds: [$eventIds],
+                  updatedAfter: $startTimeStamp,
                 }) {
                   nodes {
                     id

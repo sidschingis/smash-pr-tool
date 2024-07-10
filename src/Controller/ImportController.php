@@ -10,36 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TestController extends AbstractApiController
+abstract class AbstractApiController extends AbstractApiController
 {
-    public const ROUTE_PLAYER_SETS = 'player_sets';
-
-    #[Route('/test/foo', name: 'app_lucky_number')]
-    public function number(): Response
-    {
-        $number = random_int(0, 100);
-
-        $token = $this->getToken();
-
-        $request = new ApiRequest();
-        $query = new SetsForPlayer(playerId: 1135316);
-
-        $response = $request->sendRequest(
-            query: $query,
-            token: $token,
-        );
-
-        return new Response(
-            '<html>
-            <body>
-            <pre>' . $response . '
-            </pre>
-            </body>
-            </html>'
-        );
-    }
-
-    #[Route('/player/{idPlayer}/sets', name: TestController::ROUTE_PLAYER_SETS, requirements: ['idPlayer' => '\d+'])]
+    #[Route(
+        '/import/player/{idPlayer}/sets',
+        name: 'import_player_sets',
+        requirements: ['idPlayer' => '\d+']
+    )]
     public function playerSets(
         int $idPlayer
     ): Response {
@@ -77,7 +54,7 @@ class TestController extends AbstractApiController
         );
     }
 
-    #[Route('/player/{idPlayer}/tournaments', name: 'player_events', requirements: ['idPlayer' => '\d+'])]
+    #[Route('/import/{idPlayer}/tournaments', name: 'player_events', requirements: ['idPlayer' => '\d+'])]
     public function playerTournaments(int $idPlayer): Response
     {
         $token = $this->getToken();

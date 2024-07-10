@@ -11,6 +11,7 @@ class SetData
      */
     public function __construct(
         public string $playerName,
+        public string $playerId,
         public array $eventInfos,
     ) {
     }
