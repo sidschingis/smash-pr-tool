@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Players{% endblock %}
+
+{% block body %}
+<div id="PlayerCrud">
+    <h2>Players</h2>
+
+    <h3>Filter Players </h3>
+    {{form(filterForm)}}
+
+    <h3>Add Player </h3>
+    {{form(addForm)}}
+
+    <h3>Edit Players </h3>
+    {% for editForm in editForms %}
+        {{form(editForm)}}
+    {% endfor %}
+    <pre>
+    {{ debug }}
+    </pre>
+</div>
+{% endblock %}

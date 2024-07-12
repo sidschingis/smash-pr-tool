@@ -8,16 +8,16 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
 class Player
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column(length: 20)]
-    private ?string $tag = null;
-
-    #[ORM\Column(length: 50)]
-    private ?string $twitterTag = null;
+    public function __construct(
+        #[ORM\Id]
+        #[ORM\Column]
+        private ?int $id = null,
+        #[ORM\Column(length: 20)]
+        private ?string $tag = null,
+        #[ORM\Column(length: 50)]
+        private ?string $twitterTag = null,
+    ) {
+    }
 
     public function getId(): ?int
     {

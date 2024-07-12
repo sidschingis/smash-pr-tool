@@ -3,29 +3,25 @@ body {
     color: white;
 }
 
-form label {
-    cursor: pointer;
-}
+form {
+    label {
+     cursor: pointer;
+    }
 
-form button {
-    margin-top: 10px;
-}
+    button:hover {
+        background-color: red;
+    }
 
-.d-flex-row {
-    display: flex;
-    justify-content: space-between;
-}
-
-.d-flex-row:hover {
-    background-color: red;
-}
-
-.d-flex-row label {
-    flex-grow: 1;
-}
-
-button:hover {
-    background-color: red;
+    .d-flex-row {
+        display: flex;
+        justify-content: space-between;
+        label {
+            flex-grow: 1;
+        }
+        :hover {
+            background-color: red;
+        }
+    }
 }
 
 .d-grid {
@@ -41,4 +37,31 @@ button:hover {
 .set-container {
     display: flex;
     flex-flow: column;
+
+    button {
+        margin-top: 10px;
+    }
+}
+
+#PlayerCrud {
+    div.filter-form {
+        > div {
+            display: grid;
+        }
+    }
+
+    div#add_player_form,
+    div#edit_player_form {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        >div {
+            display: inline-grid;
+
+            :last-child{
+                align-self: flex-end;
+            }
+        }
+    }
 }

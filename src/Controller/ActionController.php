@@ -53,6 +53,7 @@ class ActionController extends AbstractApiController
                 $sets->eventInfos
             )
         );
+
         $response = <<<EOD
         <pre>
         Sets imported:

@@ -21,7 +21,6 @@ class SetsForPlayer extends AbstractQuery
 
         $eventInfos = self::GetEventInfos($data);
 
-
         return new SetData(
             playerName: $data?->data?->player?->gamerTag ?? '',
             playerId: $data?->data?->player?->id ?? 0,

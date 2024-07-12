@@ -10,11 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-abstract class AbstractApiController extends AbstractApiController
+class ImportController extends AbstractApiController
 {
+    public const ROUTE_IMPORT_SETS = 'import_player_sets';
+
     #[Route(
         '/import/player/{idPlayer}/sets',
-        name: 'import_player_sets',
+        name: ImportController::ROUTE_IMPORT_SETS,
         requirements: ['idPlayer' => '\d+']
     )]
     public function playerSets(
@@ -27,19 +29,13 @@ abstract class AbstractApiController extends AbstractApiController
         $tournamentIds = $queryParams->all()['tournamentIds'] ?? [];
         $startTime = $queryParams->getInt('startTime');
 
-        $token = $this->getToken();
-
-        $request = new ApiRequest();
         $query = new SetsForPlayer(
             playerId: $idPlayer,
             tournamentIds: $tournamentIds,
             startTimeStamp: $startTime,
         );
 
-        $response = $request->sendRequest(
-            query: $query,
-            token: $token,
-        );
+        $response = $this->sendRequest($query);
 
         $sets = SetsForPlayer::JsonToSetData($response);
 
@@ -54,25 +50,23 @@ abstract class AbstractApiController extends AbstractApiController
         );
     }
 
-    #[Route('/import/{idPlayer}/tournaments', name: 'player_events', requirements: ['idPlayer' => '\d+'])]
+    #[Route(
+        '/import/player/{idPlayer}/events',
+        name: 'import_player_events',
+        requirements: ['idPlayer' => '\d+']
+    )]
     public function playerTournaments(int $idPlayer): Response
     {
-        $token = $this->getToken();
-
-        $request = new ApiRequest();
         $query = new TournamentsForPlayer(playerId: $idPlayer);
 
-        $response = $request->sendRequest(
-            query: $query,
-            token: $token,
-        );
+        $response = $this->sendRequest($query);
 
         $tournamentData = TournamentsForPlayer::JsonToTournamentData($response);
         $tournaments = $tournamentData->tournaments;
         $debug = var_export($tournaments, true);
 
         $route = $this->generateUrl(
-            TestController::ROUTE_PLAYER_SETS,
+            ImportController::ROUTE_IMPORT_SETS,
             parameters: [
                 'idPlayer' => $idPlayer,
             ],
