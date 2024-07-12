@@ -6,8 +6,11 @@ use App\Repository\SetRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: SetRepository::class)]
+#[Index(name: 'by_winner', fields: ['winnerId'])]
+#[Index(name: 'by_loser', fields: ['loserId'])]
 class Set
 {
     #[ORM\Id]
