@@ -72,7 +72,7 @@ class SetsForPlayer extends AbstractQuery
 
             $slots = $rawNode?->slots ?? [];
             foreach ($slots as $slot) {
-                $id =  $slot->entrant?->id;
+                $id =  $slot->entrant?->participants[0]?->player?->id;
                 $name =  $slot->entrant?->name;
 
                 if ($name === $winnerName) {
@@ -100,7 +100,7 @@ class SetsForPlayer extends AbstractQuery
 
     public function __construct(
         protected int $playerId,
-        protected int $perPage = 100,
+        protected int $perPage = 30,
         protected int $page = 0,
         protected array $tournamentIds = [],
         protected array $eventIds = [],
@@ -138,18 +138,18 @@ class SetsForPlayer extends AbstractQuery
                     displayScore
                     slots {
                       entrant {
-                        id
                         name
+                        participants {
+                            player {
+                                id
+                            }
+                        }
                       }
                     }
                     event {
                       id
                       name
-                      tournament {
-                        id
-                        name
-                        startAt
-                      }
+                      tournament $tournament
                     }
                   }
                 }

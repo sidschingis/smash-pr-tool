@@ -16,7 +16,6 @@ class ImportSets
     {
         $entityManager = $this->entityManager;
 
-        $allSets = [];
         foreach ($setData->eventInfos as $eventData) {
             $sets = $eventData->sets;
 
