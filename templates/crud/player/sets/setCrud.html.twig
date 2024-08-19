@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Players{% endblock %}
+
+{% block body %}
+<div id="SetCrud">
+    <h2>Sets for {{ playerName }}</h2>
+
+    {# <h3>Filter Sets </h3>
+    {{form(filterForm)}} #}
+
+    <h3>Remove Sets </h3>
+    <form>
+    {% for result in setData %}
+        <div class="set-row">
+        <input type="checkbox" name="setId[]" value="{{result.id}}" id="chk{{result.id}}">
+            <label for="chk{{result.id}}" class="set-data">
+                <div class="id">{{result.id}}</div>
+                <div class="id">{{result.winnerId}}</div>
+                <div class="id">{{result.loserId}}</div>
+                <div class="score">{{result.displayScore}}</div>
+                <div class="event">{{result.tournamentName}} - {{result.eventName}}</div>
+                <div class="date">{{result.dateString}}</div>
+            </label>
+        </div>
+    {% endfor %}
+
+    <button type="submit">Delete Sets</button>
+    </form>
+
+    <pre>
+    {{ debug }}
+    </pre>
+</div>
+{% endblock %}

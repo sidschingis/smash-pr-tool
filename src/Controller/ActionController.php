@@ -63,4 +63,9 @@ class ActionController extends AbstractApiController
 
         return new Response($response);
     }
+
+    public function deleteSets()
+    {
+        #TODO
+    }
 }

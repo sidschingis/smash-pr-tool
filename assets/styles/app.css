@@ -65,3 +65,29 @@ form {
         }
     }
 }
+
+#SetCrud {
+    .set-row{
+        display: flex;
+        :hover {
+            background-color: red;
+        }
+
+        .set-data{
+            display: flex;
+            width: 100%;
+            .id{
+                flex: 1;
+            }
+            .score{
+                flex: 2;
+            }
+            .event{
+                flex: 3;
+            }
+            .date{
+                flex: 1;
+            }
+        }
+    }
+}
