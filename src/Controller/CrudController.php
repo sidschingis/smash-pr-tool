@@ -7,6 +7,7 @@ use App\Entity\Set;
 use App\Forms\Player\AddPlayerForm;
 use App\Forms\Player\EditPlayerForm;
 use App\Forms\Player\FilterPlayerForm;
+use App\Forms\Set\FilterSetsForm;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -139,13 +140,13 @@ class CrudController extends AbstractController
         $tag = $request->query->getString('tagFilter');
         if ($tag) {
             $like = $querybuilder->expr()->like('p.tag', ':tag');
-            $querybuilder->where($like);
+            $querybuilder->andWhere($like);
             $querybuilder->setParameter('tag', '%' . addcslashes($tag, '%_') . '%');
         }
 
         $id = $request->query->getString('idFilter');
         if ($id) {
-            $querybuilder->where("p.id = :id")
+            $querybuilder->andWhere("p.id = :id")
                 ->setParameter('id', $id);
         }
         $query = $querybuilder
@@ -170,6 +171,16 @@ class CrudController extends AbstractController
         int $idPlayer,
     ): Response {
         $setRepo = $entityManager->getRepository(Set::class);
+
+        $filterForm = $this->createForm(
+            FilterSetsForm::class,
+            options: [
+                'attr' => [
+                    'class' => 'filter-form',
+                ],
+            ],
+        );
+        $filterForm->handleRequest($request);
 
         /** @var ?Player */
         $player = $entityManager->find(Player::class, $idPlayer);
@@ -205,10 +216,11 @@ class CrudController extends AbstractController
         return $this->render(
             'crud/player/sets/setCrud.html.twig',
             [
+                'filterForm' => $filterForm,
                 'setData' => $setData,
                 'playerName' => $player?->getTag() ?? 'unknown',
                 'idPlayer' => $idPlayer,
-                'deleteSetsRoute' => $this->generateUrl('app_action_importSets'),
+                'deleteSetsRoute' => $this->generateUrl('app_action_deleteSets'),
             ],
         );
     }
@@ -229,25 +241,19 @@ class CrudController extends AbstractController
                 s.loserId = :playerId
             )
         EOD;
-        $querybuilder->where($playerFilter);
+        $querybuilder->andWhere($playerFilter);
         $querybuilder->setParameter('playerId', $playerId);
 
         $id = $request->query->getString('idFilter');
         if ($id) {
-            $querybuilder->where('s.id = :id')
-                ->setParameter('id', $id);
+            $querybuilder->andWhere('s.id = :id');
+            $querybuilder->setParameter('id', $id);
         }
 
-        $eventName =  $request->query->getString('eventFilter');
-        if ($eventName) {
-            $querybuilder->where('s.eventName = :eventName')
-                ->setParameter('eventName', $eventName);
-        }
-
-        $tournamentName =  $request->query->getString('tournamentFilter');
-        if ($eventName) {
-            $querybuilder->where('s.tournamentName = :tournamentName')
-                ->setParameter('tournamentName', $tournamentName);
+        $minDate = $request->query->getString('minDate');
+        if ($minDate) {
+            $querybuilder->andWhere('s.date >= :minDate');
+            $querybuilder->setParameter('minDate', $minDate);
         }
 
         $query = $querybuilder

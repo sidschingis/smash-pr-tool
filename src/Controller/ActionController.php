@@ -62,7 +62,7 @@ class ActionController extends AbstractApiController
         return new Response($response);
     }
 
-    #[Route('/action/importSets', name: 'app_action_importSets')]
+    #[Route('/action/deleteSets', name: 'app_action_deleteSets')]
     public function deleteSets(
         Request $request,
         EntityManagerInterface $entityManager

@@ -47,6 +47,12 @@ body {
         }
     }
 
+    div.filter-form {
+        >div {
+            display: grid;
+        }
+    }
+
     .d-grid {
         display: grid;
     }
@@ -70,11 +76,6 @@ body {
 }
 
 #PlayerCrud {
-    div.filter-form {
-        >div {
-            display: grid;
-        }
-    }
 
     div#add_player_form,
     div#edit_player_form {
@@ -108,6 +109,7 @@ body {
 }
 
 #SetCrud {
+
     .set-row {
         display: flex;
 

@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: SetRepository::class)]
-#[Index(name: 'by_winner', fields: ['winnerId'])]
-#[Index(name: 'by_loser', fields: ['loserId'])]
+#[Index(name: 'by_winner', fields: ['winnerId', 'date'])]
+#[Index(name: 'by_loser', fields: ['loserId', 'date'])]
 class Set
 {
     #[ORM\Id]
