@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Forms\TournamentForm;
-use App\Http\ApiRequest;
 use App\Queries\Player\SetsForPlayer;
 use App\Queries\Player\TournamentsForPlayer;
 use Symfony\Component\HttpFoundation\Request;

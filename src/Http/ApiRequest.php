@@ -4,7 +4,6 @@ namespace App\Http;
 
 use App\GraphQL\Query\Query;
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request as Psr7Request;
 
 class ApiRequest
 {

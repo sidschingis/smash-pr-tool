@@ -2,8 +2,6 @@
 
 namespace App\ControllerData;
 
-use App\Entity\Set;
-
 class SetData
 {
     /**
