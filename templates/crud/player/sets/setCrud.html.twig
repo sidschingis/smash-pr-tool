@@ -3,17 +3,19 @@
 {% block title %}Players{% endblock %}
 
 {% block body %}
-<div id="SetCrud">
+<section id="SetCrud">
     <h2>Sets for {{ playerName }}</h2>
 
     {# <h3>Filter Sets </h3>
     {{form(filterForm)}} #}
 
     <h3>Remove Sets </h3>
-    <form>
+    <form action="{{deleteSetsRoute}}" method="POST">
+    <input type="hidden" name="idPlayer" value="{{idPlayer}}">
+
     {% for result in setData %}
         <div class="set-row">
-        <input type="checkbox" name="setId[]" value="{{result.id}}" id="chk{{result.id}}">
+        <input type="checkbox" name="setIds[]" value="{{result.id}}" id="chk{{result.id}}">
             <label for="chk{{result.id}}" class="set-data">
                 <div class="id">{{result.id}}</div>
                 <div class="id">{{result.winnerId}}</div>
@@ -27,9 +29,5 @@
 
     <button type="submit">Delete Sets</button>
     </form>
-
-    <pre>
-    {{ debug }}
-    </pre>
-</div>
+</section>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block title %}Players{% endblock %}
 
 {% block body %}
-<div id="PlayerCrud">
+<section id="PlayerCrud">
     <h2>Players</h2>
 
     <h3>Filter Players </h3>
@@ -13,11 +13,13 @@
     {{form(addForm)}}
 
     <h3>Edit Players </h3>
-    {% for editForm in editForms %}
-        {{form(editForm)}}
+    {% for playerData in existingPlayers %}
+        <div class="player-data">
+            {{form(playerData.editForm)}}
+            <div class="references">
+                <a href="{{playerData.setUrl}}">Sets</a>
+            </div>
+        </div>
     {% endfor %}
-    <pre>
-    {{ debug }}
-    </pre>
-</div>
+</section>
 {% endblock %}

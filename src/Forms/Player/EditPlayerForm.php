@@ -12,7 +12,15 @@ class EditPlayerForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('id', TextType::class)
+            ->add(
+                'id',
+                TextType::class,
+                options: [
+                    'attr' => [
+                        'readonly' => true,
+                    ],
+                ],
+            )
             ->add('tag', TextType::class)
             ->add(
                 'twitterTag',

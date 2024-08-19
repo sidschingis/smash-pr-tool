@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Action\ImportSets;
+use App\Action\Sets\DeleteSets;
+use App\Action\Sets\ImportSets;
 use App\ControllerData\EventData;
 use App\Queries\Player\SetsForPlayer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,8 +62,25 @@ class ActionController extends AbstractApiController
         return new Response($response);
     }
 
-    public function deleteSets()
-    {
-        #TODO
+    #[Route('/action/importSets', name: 'app_action_importSets')]
+    public function deleteSets(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $setIds = $request->request->all()['setIds'] ?? [];
+
+        if (!$setIds) {
+            return new Response('no sets selected');
+        }
+
+        $action = new DeleteSets($entityManager);
+        $action->deleteSets($setIds);
+
+        return $this->redirectToRoute(
+            route: 'app_crud_players_sets',
+            parameters:[
+                'idPlayer' => $request->request->getString('idPlayer'),
+            ],
+        );
     }
 }

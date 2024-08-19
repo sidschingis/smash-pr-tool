@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\ClickableInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,10 +61,6 @@ class CrudController extends AbstractController
             options: [
                 'action' => '',
                 'method' => 'POST',
-                'attr' => [
-                    'name' => 'foo',
-                    'id' => 'foo',
-                ]
             ],
         );
 
@@ -95,19 +92,37 @@ class CrudController extends AbstractController
             $repository
         );
 
-        $editForms = [];
+        $existingPlayers = [];
         foreach ($players as $player) {
             $editForm->setData($player);
-            $editForms[] = $editForm->createView();
+
+            $setUrl = $this->generateUrl(
+                route: 'app_crud_players_sets',
+                parameters: [
+                    'idPlayer' => $player['id']
+                ],
+            );
+
+            $playerData = new class (
+                editForm: $editForm->createView(),
+                setUrl: $setUrl
+            ) {
+                public function __construct(
+                    public FormView $editForm,
+                    public string $setUrl,
+                ) {
+                }
+            };
+
+            $existingPlayers[] = $playerData;
         }
 
         return $this->render(
             'crud/player/playerCrud.html.twig',
             [
-                'debug' => '',
                 'filterForm' => $filterForm,
                 'addForm' => $addForm,
-                'editForms' => $editForms,
+                'existingPlayers' => $existingPlayers,
             ],
         );
     }
@@ -154,47 +169,46 @@ class CrudController extends AbstractController
         EntityManagerInterface $entityManager,
         int $idPlayer,
     ): Response {
-        $repository = $entityManager->getRepository(Set::class);
+        $setRepo = $entityManager->getRepository(Set::class);
 
-        $debug = '';
+        /** @var ?Player */
+        $player = $entityManager->find(Player::class, $idPlayer);
 
         $sets = $this->fetchSets(
             $request,
-            $repository,
+            $setRepo,
             $idPlayer,
         );
 
         $setData = [];
         foreach ($sets as $set) {
-            $form =
+            $setData[] = new class (
+                ...$set,
+            ) {
+                public string $dateString;
 
-                        $setData[] = new class (
-                            ...$set,
-                        ) {
-                            public string $dateString;
-
-                            public function __construct(
-                                public int $id,
-                                public int $winnerId,
-                                public int $loserId,
-                                public string $displayScore,
-                                public string $eventName,
-                                public string $tournamentName,
-                                DateTime $date,
-                            ) {
-                                $this->dateString = $date->format('Y-m-d');
-                            }
-                        };
+                public function __construct(
+                    public int $id,
+                    public int $winnerId,
+                    public int $loserId,
+                    public string $displayScore,
+                    public string $eventName,
+                    public string $tournamentName,
+                    DateTime $date,
+                ) {
+                    $this->dateString = $date->format('Y-m-d');
+                }
+            };
 
         }
 
         return $this->render(
             'crud/player/sets/setCrud.html.twig',
             [
-                'debug' => $debug,
                 'setData' => $setData,
-                'playerName' => 'foo',
-                'deleteSetsRoute' => '',
+                'playerName' => $player?->getTag() ?? 'unknown',
+                'idPlayer' => $idPlayer,
+                'deleteSetsRoute' => $this->generateUrl('app_action_importSets'),
             ],
         );
     }
@@ -237,7 +251,7 @@ class CrudController extends AbstractController
         }
 
         $query = $querybuilder
-            ->setMaxResults(20)
+            ->setMaxResults(100)
             ->getQuery();
 
         $players = $query

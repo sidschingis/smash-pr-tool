@@ -1,31 +1,55 @@
 body {
     background-color: black;
     color: white;
-}
 
-form {
-    label {
-     cursor: pointer;
+    a {
+        font-weight: bold;
+        color: blue;
     }
 
-    button:hover {
-        background-color: red;
+    a:visited {
+        color: lightskyblue;
     }
 
-    .d-flex-row {
-        display: flex;
-        justify-content: space-between;
+    a:hover {
+        color: red;
+    }
+
+    form {
         label {
-            flex-grow: 1;
+            cursor: pointer;
         }
-        :hover {
+
+        button {
+            cursor: pointer;
+        }
+
+        button:hover {
             background-color: red;
         }
-    }
-}
 
-.d-grid {
-    display: grid;
+        .d-flex-row {
+            display: flex;
+            justify-content: space-between;
+
+            label {
+                flex-grow: 1;
+            }
+
+            :hover {
+                background-color: red;
+            }
+        }
+
+        input[readonly="readonly"] {
+            background-color: grey;
+            cursor: default;
+        }
+    }
+
+    .d-grid {
+        display: grid;
+    }
 }
 
 /* Tournament */
@@ -34,18 +58,20 @@ form {
 }
 
 /* Sets */
-.set-container {
-    display: flex;
-    flex-flow: column;
+#ImportSets {
+    .set-container {
+        display: flex;
+        flex-flow: column;
 
-    button {
-        margin-top: 10px;
+        button {
+            margin-top: 10px;
+        }
     }
 }
 
 #PlayerCrud {
     div.filter-form {
-        > div {
+        >div {
             display: grid;
         }
     }
@@ -59,33 +85,53 @@ form {
         >div {
             display: inline-grid;
 
-            :last-child{
+            :last-child {
                 align-self: flex-end;
             }
+        }
+    }
+
+    .player-data {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+
+        form {
+            flex: 1;
+        }
+
+        .references {
+            display: flex;
+            align-items: end;
         }
     }
 }
 
 #SetCrud {
-    .set-row{
+    .set-row {
         display: flex;
+
         :hover {
             background-color: red;
         }
 
-        .set-data{
+        .set-data {
             display: flex;
             width: 100%;
-            .id{
+
+            .id {
                 flex: 1;
             }
-            .score{
+
+            .score {
                 flex: 2;
             }
-            .event{
+
+            .event {
                 flex: 3;
             }
-            .date{
+
+            .date {
                 flex: 1;
             }
         }

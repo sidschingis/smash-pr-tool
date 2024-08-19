@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action;
+namespace App\Action\Sets;
 
 use App\ControllerData\SetData;
 use Doctrine\ORM\EntityManagerInterface;
