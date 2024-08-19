@@ -2,9 +2,6 @@
 
 namespace App\Objects;
 
-use App\GraphQL\Query\AbstractQuery;
-use DateTime;
-
 class Tournament
 {
     public function __construct(
