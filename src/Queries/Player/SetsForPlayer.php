@@ -100,7 +100,7 @@ class SetsForPlayer extends AbstractQuery
 
     public function __construct(
         protected int $playerId,
-        protected int $perPage = 30,
+        protected int $perPage = 300,
         protected int $page = 0,
         protected array $tournamentIds = [],
         protected array $eventIds = [],

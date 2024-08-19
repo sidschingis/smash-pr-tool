@@ -3,6 +3,7 @@
 namespace App\Action\Sets;
 
 use App\ControllerData\SetData;
+use App\Entity\Set;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ImportSets
@@ -16,16 +17,63 @@ class ImportSets
     {
         $entityManager = $this->entityManager;
 
-        foreach ($setData->eventInfos as $eventData) {
-            $sets = $eventData->sets;
+        $newSets = $this->filterSets($setData);
 
-            foreach ($sets as $set) {
-                $entityManager->persist($set);
-            }
+        foreach ($newSets as $set) {
+            $entityManager->persist($set);
         }
 
         $entityManager->flush();
 
         return true;
+    }
+
+    /**
+     * @return Set[]
+     */
+    private function filterSets(SetData $setData): array
+    {
+        $entityManager = $this->entityManager;
+
+        $setIds = [];
+        foreach ($setData->eventInfos as $eventData) {
+            $sets = $eventData->sets;
+
+            foreach ($sets as $set) {
+                $setIds[] = $set->getId();
+            }
+        }
+
+        $setRepo = $entityManager->getRepository(Set::class);
+
+        /** @var Set[] */
+        $existingSets = $setRepo->findBy(
+            criteria:[
+                'id' => $setIds,
+            ],
+        );
+
+        $existingIds = [];
+        foreach ($existingSets as $existing) {
+            $id = $existing->getId();
+            $existingIds[$id] = $id;
+        }
+
+        $newSets = [];
+
+        foreach ($setData->eventInfos as $eventData) {
+            $sets = $eventData->sets;
+
+            foreach ($sets as $set) {
+                $id = $set->getId();
+                if (array_key_exists($id, $existingIds)) {
+                    continue;
+                }
+
+                $newSets[] = $set;
+            }
+        }
+
+        return $newSets;
     }
 }
