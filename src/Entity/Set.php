@@ -14,7 +14,6 @@ use Doctrine\ORM\Mapping\Index;
 class Set
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
