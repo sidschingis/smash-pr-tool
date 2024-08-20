@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ImportController extends AbstractApiController
 {
-    public const ROUTE_IMPORT_SETS = 'import_player_sets';
+    public const ROUTE_IMPORT_SETS = 'app_import_player_sets';
 
     #[Route(
         '/import/player/{idPlayer}/sets',
@@ -51,7 +51,7 @@ class ImportController extends AbstractApiController
 
     #[Route(
         '/import/player/{idPlayer}/events',
-        name: 'import_player_events',
+        name: 'app_import_player_events',
         requirements: ['idPlayer' => '\d+']
     )]
     public function playerTournaments(int $idPlayer): Response

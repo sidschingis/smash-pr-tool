@@ -106,7 +106,7 @@ class CrudController extends AbstractController
                     ],
                 ), 'Sets'),
                 new LinkData($this->generateUrl(
-                    route: 'import_player_events',
+                    route: 'app_import_player_events',
                     parameters: [
                         'idPlayer' => $player['id']
                     ],
