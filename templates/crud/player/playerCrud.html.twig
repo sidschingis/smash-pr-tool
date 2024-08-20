@@ -9,19 +9,10 @@
     <h3>Filter Players </h3>
     {{form(filterForm)}}
 
-    <h3>Add Player </h3>
+    <h3>Add Player</h3>
     {{form(addForm)}}
 
     <h3>Edit Players </h3>
-    {% for playerData in existingPlayers %}
-        <div class="player-data">
-            {{form(playerData.editForm)}}
-            <div class="references">
-                {% for linkData in playerData.links %}
-                    <a href="{{linkData.url}}">{{linkData.text}}</a>
-                {% endfor %}
-            </div>
-        </div>
-    {% endfor %}
+    {{ include("crud/includes/crudContainer.html.twig") }}
 </section>
 {% endblock %}

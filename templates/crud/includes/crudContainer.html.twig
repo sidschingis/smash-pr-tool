@@ -1,0 +1,10 @@
+{% for data in existingData %}
+<div class="data">
+    {{form(data.editForm)}}
+    <div class="references">
+        {% for linkData in data.links %}
+        <a href="{{linkData.url}}">{{linkData.text}}</a>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}

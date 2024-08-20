@@ -132,7 +132,7 @@ class CrudController extends AbstractController
             [
                 'filterForm' => $filterForm,
                 'addForm' => $addForm,
-                'existingPlayers' => $existingPlayers,
+                'existingData' => $existingPlayers,
             ],
         );
     }
