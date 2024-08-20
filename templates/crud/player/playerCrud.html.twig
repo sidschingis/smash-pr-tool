@@ -17,7 +17,9 @@
         <div class="player-data">
             {{form(playerData.editForm)}}
             <div class="references">
-                <a href="{{playerData.setUrl}}">Sets</a>
+                {% for linkData in playerData.links %}
+                    <a href="{{linkData.url}}">{{linkData.text}}</a>
+                {% endfor %}
             </div>
         </div>
     {% endfor %}

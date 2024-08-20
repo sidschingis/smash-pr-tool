@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Berlin Smash PR Tool{% endblock %}
+
+{% block body %}
+    <h1>Berlin Smash PR Tool</h1>
+    <section id="Navigation">
+        <div class="link-container">
+            {% for linkData in links %}
+            <a href="{{linkData.url}}">{{linkData.text}}</a>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

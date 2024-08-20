@@ -8,6 +8,7 @@ use App\Forms\Player\AddPlayerForm;
 use App\Forms\Player\EditPlayerForm;
 use App\Forms\Player\FilterPlayerForm;
 use App\Forms\Set\FilterSetsForm;
+use App\Http\LinkData;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -97,20 +98,28 @@ class CrudController extends AbstractController
         foreach ($players as $player) {
             $editForm->setData($player);
 
-            $setUrl = $this->generateUrl(
-                route: 'app_crud_players_sets',
-                parameters: [
-                    'idPlayer' => $player['id']
-                ],
-            );
+            $links = [
+                new LinkData($this->generateUrl(
+                    route: 'app_crud_players_sets',
+                    parameters: [
+                        'idPlayer' => $player['id']
+                    ],
+                ), 'Sets'),
+                new LinkData($this->generateUrl(
+                    route: 'import_player_events',
+                    parameters: [
+                        'idPlayer' => $player['id']
+                    ],
+                ), 'Import'),
+            ];
 
             $playerData = new class (
                 editForm: $editForm->createView(),
-                setUrl: $setUrl
+                links: $links,
             ) {
                 public function __construct(
                     public FormView $editForm,
-                    public string $setUrl,
+                    public array $links,
                 ) {
                 }
             };
