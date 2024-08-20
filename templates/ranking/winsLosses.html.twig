@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Wins/Losses for {{playerTag}}{% endblock %}
+
+{% block body %}
+<h1>Wins/Losses for {{playerTag}}</h1>
+
+<div id="WinsLosses">
+    <section id="Wins">
+        <h2>Wins</h2>
+        <div class="result-container">
+            {% for opponent in wins %}
+            <div class="opponent-container">
+                <span class="count">x{{opponent.count}}</span>
+                <span class="tag">{{opponent.name}}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="Losses">
+        <h2>Losses</h2>
+        <div class="result-container">
+            {% for opponent in losses %}
+            <div class="opponent-container">
+                <span class="count">x{{opponent.count}}</span>
+                <span class="tag">{{opponent.name}}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}
