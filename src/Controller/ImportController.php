@@ -39,7 +39,7 @@ class ImportController extends AbstractApiController
         $sets = SetsForPlayer::JsonToSetData($response);
 
         return $this->render(
-            'player/sets/setView.html.twig',
+            'import/player/sets/setView.html.twig',
             [
                 'action'     => $this->generateUrl('app_action_importSets'),
                 'playerName' => $sets->playerName,
@@ -90,7 +90,7 @@ class ImportController extends AbstractApiController
         );
 
         return $this->render(
-            'player/tournaments/formContainer.html.twig',
+            'import/player/tournaments/tournamentSelect.html.twig',
             [
                 'debug' => $debug,
                 'playerName' => $tournamentData->name,

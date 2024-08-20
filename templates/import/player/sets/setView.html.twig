@@ -11,8 +11,11 @@
         <div>
             {% for eventData in eventInfos %}
             <h3 class="d-flex-row">
-                <input type="checkbox" id="eventIds_{{ eventData.eventId }}" name="eventIds[]" value="{{ eventData.eventId }}">
-                <label for="eventIds_{{ eventData.eventId }}">{{ eventData.tournamentName }} {{ eventData.eventName }}</label>
+                <input type="checkbox" id="eventIds_{{ eventData.eventId }}" name="eventIds[]"
+                    value="{{ eventData.eventId }}">
+                <label for="eventIds_{{ eventData.eventId }}" class="row-label">
+                    {{ eventData.tournamentName }} {{eventData.eventName }}
+                </label>
             </h3>
             <div class="set-container">
                 {% for sets in eventData.sets %}
@@ -21,7 +24,7 @@
             </div>
             {% endfor %}
         </div>
-    <button type="submit" id="go" name="go">Import Sets</button>
+        <button type="submit" id="go" name="go">Import Sets</button>
     </form>
 </section>
 {% endblock %}

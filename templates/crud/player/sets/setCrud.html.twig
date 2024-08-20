@@ -11,12 +11,12 @@
 
     <h3>Remove Sets </h3>
     <form action="{{deleteSetsRoute}}" method="POST">
-    <input type="hidden" name="idPlayer" value="{{idPlayer}}">
+        <input type="hidden" name="idPlayer" value="{{idPlayer}}">
 
-    {% for result in setData %}
+        {% for result in setData %}
         <div class="set-row">
-        <input type="checkbox" name="setIds[]" value="{{result.id}}" id="chk{{result.id}}">
-            <label for="chk{{result.id}}" class="set-data">
+            <input type="checkbox" name="setIds[]" value="{{result.id}}" id="chk{{result.id}}">
+            <label for="chk{{result.id}}" class="set-data row-label">
                 <div class="id">{{result.id}}</div>
                 <div class="id">{{result.winnerId}}</div>
                 <div class="id">{{result.loserId}}</div>
@@ -25,9 +25,9 @@
                 <div class="date">{{result.dateString}}</div>
             </label>
         </div>
-    {% endfor %}
+        {% endfor %}
 
-    <button type="submit">Delete Sets</button>
+        <button type="submit">Delete Sets</button>
     </form>
 </section>
 {% endblock %}

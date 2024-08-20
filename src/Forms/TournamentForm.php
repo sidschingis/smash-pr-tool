@@ -28,7 +28,10 @@ class TournamentForm extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
-            ]
+                'label_attr' => [
+                    'class' => 'row-label',
+                ],
+            ],
         );
 
         $builder->add('go', SubmitType::class, ['label' => 'Show Sets']);

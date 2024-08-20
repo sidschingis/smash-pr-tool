@@ -15,14 +15,15 @@ body {
         color: red;
     }
 
-    form {
-        label {
-            cursor: pointer;
-        }
+    label.row-label {
+        cursor: pointer;
+    }
 
-        label:hover {
-            background-color: red;
-        }
+    label.row-label:hover {
+        background-color: red;
+    }
+
+    form {
 
         button {
             cursor: pointer;
@@ -70,6 +71,11 @@ body {
 
         label {
             width: calc(100% - 32px);
+        }
+
+        label:hover {
+            cursor: pointer;
+            background-color: red;
         }
     }
 }
