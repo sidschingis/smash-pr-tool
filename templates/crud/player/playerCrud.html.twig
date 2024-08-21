@@ -3,16 +3,13 @@
 {% block title %}Players{% endblock %}
 
 {% block body %}
-<section id="PlayerCrud">
+<section id="PlayerCrud" class="crud-container">
     <h2>Players</h2>
 
     <h3>Filter Players </h3>
     {{form(filterForm)}}
 
-    <h3>Add Player</h3>
-    {{form(addForm)}}
-
-    <h3>Edit Players </h3>
-    {{ include("crud/includes/crudContainer.html.twig") }}
+    {{ include("crud/includes/crudContainer.html.twig",
+    {'addTitle': 'Add Player', 'editTitle': 'Edit Players'}) }}
 </section>
 {% endblock %}
