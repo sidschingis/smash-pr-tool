@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% set titleString = 'Seasons'%}
+{% block title %}{{titleString}}{% endblock %}
+
+{% block body %}
+<section id="SeasonCrud" class="crud-container">
+    <h2>{{titleString}}</h2>
+
+    {{ include("crud/includes/crudContainer.html.twig",
+    {'addTitle': 'Add Season', 'editTitle': 'Edit Seasons'}) }}
+</section>
+{% endblock %}

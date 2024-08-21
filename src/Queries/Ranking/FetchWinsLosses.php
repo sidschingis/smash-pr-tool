@@ -10,12 +10,20 @@ class FetchWinsLosses
 {
     public function getData(
         EntityManagerInterface $entityManager,
-        int $idPlayer
+        int $idSeason,
+        int $idPlayer,
     ): array {
-        $wins = $this->fetchWins($entityManager, $idPlayer);
+        $wins = $this->fetchWins(
+            entityManager: $entityManager,
+            idSeason: $idSeason,
+            idPlayer: $idPlayer,
+        );
 
-        $losses = $this->fetchLosses($entityManager, $idPlayer);
-
+        $losses = $this->fetchLosses(
+            entityManager: $entityManager,
+            idSeason: $idSeason,
+            idPlayer: $idPlayer,
+        );
 
         return [$wins, $losses];
     }
@@ -25,11 +33,13 @@ class FetchWinsLosses
      */
     private function fetchWins(
         EntityManagerInterface $entityManager,
-        int $idPlayer
+        int $idSeason,
+        int $idPlayer,
     ): array {
         $sql = $this->getSetQuery(
             playerColumn: 'winner_id',
             opponentColumn: 'loser_id',
+            idSeason: $idSeason,
             idPlayer: $idPlayer,
         );
 
@@ -41,11 +51,13 @@ class FetchWinsLosses
      */
     private function fetchLosses(
         EntityManagerInterface $entityManager,
-        int $idPlayer
+        int $idSeason,
+        int $idPlayer,
     ): array {
         $sql = $this->getSetQuery(
             playerColumn: 'loser_id',
             opponentColumn: 'winner_id',
+            idSeason: $idSeason,
             idPlayer: $idPlayer,
         );
 
@@ -92,7 +104,8 @@ class FetchWinsLosses
     private function getSetQuery(
         string $playerColumn,
         string $opponentColumn,
-        int $idPlayer
+        int $idSeason,
+        int $idPlayer,
     ): string {
         return <<<EOD
             SELECT
@@ -100,8 +113,10 @@ class FetchWinsLosses
                 ,s.$opponentColumn opponent_id
                 ,COALESCE(op.tag,'') opponent_tag
             FROM "set" s
+            JOIN season ON (season.id = $idSeason)
             LEFT JOIN player op ON (op.id = s.$opponentColumn)
             WHERE $playerColumn=$idPlayer
+            AND s.date BETWEEN season.start_date and season.end_date
             GROUP BY s.$opponentColumn, op.tag
             ;
         EOD;

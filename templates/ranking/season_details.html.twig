@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% set titleString = 'Season ' ~ seasonName %}
+
+{% block title %}{{titleString}}{% endblock %}
+
+{% block body %}
+<h2>{{titleString}}</h2>
+
+<div id="SeasonDetails">
+
+    <section>
+        <h3>Wins & Losses</h3>
+        <form action="{{winLossRoute}}" method="GET" target="_blank">
+            <label for="WinLossIdPlayer" class="required">Player id</label>
+            <input type="text" id="WinLossIdPlayer" name="idPlayer" required="required">
+            <button type="submit">View</button>
+        </form>
+    </section>
+</div>
+{% endblock %}
