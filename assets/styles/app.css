@@ -1,18 +1,27 @@
+:root {
+    --color-background: black;
+    --color-text: white;
+    --color-highlight: red;
+    --color-disabled: gray;
+    --color-link: blue;
+    --color-link-visited: lightskyblue;
+}
+
 body {
-    background-color: black;
-    color: white;
+    background-color: var(--color-background);
+    color: var(--color-text);
 
     a {
         font-weight: bold;
-        color: blue;
+        color: var(--color-link);
     }
 
     a:visited {
-        color: lightskyblue;
+        color: var(--color-link-visited);
     }
 
     a:hover {
-        color: red;
+        color: var(--color-highlight);
     }
 
     label.row-label {
@@ -20,7 +29,7 @@ body {
     }
 
     label.row-label:hover {
-        background-color: red;
+        background-color: var(--color-highlight);
     }
 
     form {
@@ -30,7 +39,7 @@ body {
         }
 
         button:hover {
-            background-color: red;
+            background-color: var(--color-highlight);
         }
 
         .d-flex-row {
@@ -42,12 +51,12 @@ body {
             }
 
             :hover {
-                background-color: red;
+                background-color: var(--color-highlight);
             }
         }
 
         input[readonly="readonly"] {
-            background-color: grey;
+            background-color: var(--color-disabled);
             cursor: default;
         }
     }
@@ -111,7 +120,7 @@ body {
 
         label:hover {
             cursor: pointer;
-            background-color: red;
+            background-color: var(--color-highlight);
         }
     }
 }
@@ -134,7 +143,7 @@ body {
         flex-wrap: wrap;
 
         :hover {
-            background-color: red;
+            background-color: var(--color-highlight);
         }
 
         .set-data {
@@ -178,5 +187,27 @@ body {
     .result-container {
         display: flex;
         flex-direction: column;
+    }
+}
+
+#SeasonRanking {
+    .rank-row {
+        display: flex;
+        gap: 30px;
+        justify-content: space-between;
+
+        .rank {
+            flex-grow: 0;
+            flex-basis: 40px;
+        }
+
+        .player-id,
+        .player-tag {
+            flex: 1;
+        }
+    }
+
+    .rank-row:hover {
+        background-color: var(--color-highlight);
     }
 }

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% set titleString = 'Ranking ' ~ seasonName %}
+
+{% block title %}{{titleString}}{% endblock %}
+
+{% block body %}
+<h2>{{titleString}}</h2>
+
+<div id="SeasonRanking">
+    <section>
+        <h3>Ranking</h3>
+        <form action="{{updateAction}}" method="POST">
+            <input type="hidden" name="idSeason" value="{{idSeason}}">
+            <div class="rank-row">
+                <span class="rank">Rank</span>
+                <span class="player-id">Player Id</span>
+                <span class="player-tag">Player Tag</span>
+            </div>
+            {% for data in rankings %}
+            <div class="rank-row">
+                <span class="rank">{{data.rank}}</span>
+                <input class="player-id" type="text" value="{{data.idPlayer}}" name="idPlayer[{{data.rank}}]"
+                    required="required">
+                <span class="player-tag">{{data.playerTag}}</span>
+            </div>
+            {% endfor %}
+            <button type="submit">Update</button>
+        </form>
+    </section>
+</div>
+{% endblock %}

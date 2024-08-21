@@ -7,6 +7,7 @@ use App\Entity\Season;
 use App\Forms\Ranking\AddSeasonForm;
 use App\Forms\Ranking\EditSeasonForm;
 use App\Http\LinkData;
+use App\Queries\Ranking\FetchRankings;
 use App\Queries\Ranking\FetchWinsLosses;
 use App\Repository\SeasonRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -206,7 +207,8 @@ class RankingController extends AbstractController
             return $this->redirectToRoute('app_ranking_season_crud');
         }
 
-        $existingRankings = [];
+        $query = new FetchRankings();
+        $existingRankings = $query->getData($entityManager, $idSeason);
 
         $rankings = [];
         foreach(range(1, 20) as $rank) {
@@ -229,6 +231,8 @@ class RankingController extends AbstractController
             'ranking/season_ranking.html.twig',
             [
                 'seasonName' => $season->getName(),
+                'updateAction' => $this->generateUrl('app_action_updateRankings'),
+                'idSeason' => $idSeason,
                 'rankings' => $rankings,
             ],
         );

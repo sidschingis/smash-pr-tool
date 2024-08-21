@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Action\Ranking\UpdateRankings;
 use App\Action\Sets\DeleteSets;
 use App\Action\Sets\ImportSets;
 use App\ControllerData\EventData;
@@ -80,6 +81,26 @@ class ActionController extends AbstractApiController
             route: 'app_crud_players_sets',
             parameters:[
                 'idPlayer' => $request->request->getString('idPlayer'),
+            ],
+        );
+    }
+
+    #[Route('/action/updateRankings', name: 'app_action_updateRankings')]
+    public function updateRankings(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $idSeason = $request->request->getInt('idSeason');
+
+        $ranking = $request->request->all()['idPlayer'] ?? [];
+
+        $action = new UpdateRankings($entityManager);
+        $action->updateRankings($idSeason, $ranking);
+
+        return $this->redirectToRoute(
+            route: 'app_ranking_season_ranking',
+            parameters:[
+                'idSeason' => $idSeason,
             ],
         );
     }
