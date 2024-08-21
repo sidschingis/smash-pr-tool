@@ -11,7 +11,7 @@
     <section>
         <h3>Ranking</h3>
         <form action="{{updateAction}}" method="POST">
-            <input type="hidden" name="idSeason" value="{{idSeason}}">
+            <input type="hidden" name="seasonId" value="{{seasonId}}">
             <div class="rank-row">
                 <span class="rank">Rank</span>
                 <span class="player-id">Player Id</span>
@@ -20,7 +20,7 @@
             {% for data in rankings %}
             <div class="rank-row">
                 <span class="rank">{{data.rank}}</span>
-                <input class="player-id" type="text" value="{{data.idPlayer}}" name="idPlayer[{{data.rank}}]"
+                <input class="player-id" type="text" value="{{data.playerId}}" name="playerId[{{data.rank}}]"
                     required="required">
                 <span class="player-tag">{{data.playerTag}}</span>
             </div>

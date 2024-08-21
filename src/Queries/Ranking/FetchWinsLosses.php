@@ -10,19 +10,19 @@ class FetchWinsLosses
 {
     public function getData(
         EntityManagerInterface $entityManager,
-        int $idSeason,
-        int $idPlayer,
+        int $seasonId,
+        int $playerId,
     ): array {
         $wins = $this->fetchWins(
             entityManager: $entityManager,
-            idSeason: $idSeason,
-            idPlayer: $idPlayer,
+            seasonId: $seasonId,
+            playerId: $playerId,
         );
 
         $losses = $this->fetchLosses(
             entityManager: $entityManager,
-            idSeason: $idSeason,
-            idPlayer: $idPlayer,
+            seasonId: $seasonId,
+            playerId: $playerId,
         );
 
         return [$wins, $losses];
@@ -33,14 +33,14 @@ class FetchWinsLosses
      */
     private function fetchWins(
         EntityManagerInterface $entityManager,
-        int $idSeason,
-        int $idPlayer,
+        int $seasonId,
+        int $playerId,
     ): array {
         $sql = $this->getSetQuery(
             playerColumn: 'winner_id',
             opponentColumn: 'loser_id',
-            idSeason: $idSeason,
-            idPlayer: $idPlayer,
+            seasonId: $seasonId,
+            playerId: $playerId,
         );
 
         return $this->fetchSets($sql, $entityManager);
@@ -51,14 +51,14 @@ class FetchWinsLosses
      */
     private function fetchLosses(
         EntityManagerInterface $entityManager,
-        int $idSeason,
-        int $idPlayer,
+        int $seasonId,
+        int $playerId,
     ): array {
         $sql = $this->getSetQuery(
             playerColumn: 'loser_id',
             opponentColumn: 'winner_id',
-            idSeason: $idSeason,
-            idPlayer: $idPlayer,
+            seasonId: $seasonId,
+            playerId: $playerId,
         );
 
         return $this->fetchSets($sql, $entityManager);
@@ -104,8 +104,8 @@ class FetchWinsLosses
     private function getSetQuery(
         string $playerColumn,
         string $opponentColumn,
-        int $idSeason,
-        int $idPlayer,
+        int $seasonId,
+        int $playerId,
     ): string {
         return <<<EOD
             SELECT
@@ -113,9 +113,9 @@ class FetchWinsLosses
                 ,s.$opponentColumn opponent_id
                 ,COALESCE(op.tag,'') opponent_tag
             FROM "set" s
-            JOIN season ON (season.id = $idSeason)
+            JOIN season ON (season.id = $seasonId)
             LEFT JOIN player op ON (op.id = s.$opponentColumn)
-            WHERE $playerColumn=$idPlayer
+            WHERE $playerColumn=$playerId
             AND s.date BETWEEN season.start_date and season.end_date
             GROUP BY s.$opponentColumn, op.tag
             ;

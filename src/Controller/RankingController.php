@@ -88,13 +88,13 @@ class RankingController extends AbstractController
             $links = [
                 new LinkData(
                     $this->generateUrl('app_ranking_season_details', [
-                        'idSeason' => $entity['id'],
+                        'seasonId' => $entity['id'],
                     ]),
                     'Details',
                 ),
                 new LinkData(
                     $this->generateUrl('app_ranking_season_ranking', [
-                        'idSeason' => $entity['id'],
+                        'seasonId' => $entity['id'],
                     ]),
                     'Ranking',
                 ),
@@ -125,22 +125,22 @@ class RankingController extends AbstractController
 
 
     #[Route(
-        '/ranking/season/{idSeason}',
+        '/ranking/season/{seasonId}',
         name: 'app_ranking_season_details',
-        requirements: ['idSeason' => '\d+']
+        requirements: ['seasonId' => '\d+']
     )]
     public function seasonDetails(
         EntityManagerInterface $entityManager,
-        int $idSeason,
+        int $seasonId,
     ): Response {
         /** @var ?Season */
-        $season = $entityManager->find(Season::class, $idSeason);
+        $season = $entityManager->find(Season::class, $seasonId);
         if (!$season) {
             return $this->redirectToRoute('app_ranking_season_crud');
         }
 
         $winLossRoute =   $this->generateUrl('app_ranking_season_winsLosses', [
-         'idSeason' => $idSeason,
+         'seasonId' => $seasonId,
         ]);
 
         return $this->render(
@@ -153,23 +153,23 @@ class RankingController extends AbstractController
     }
 
     #[Route(
-        '/ranking/season/{idSeason}/winsLosses',
+        '/ranking/season/{seasonId}/winsLosses',
         name: 'app_ranking_season_winsLosses',
-        requirements: ['idSeason' => '\d+']
+        requirements: ['seasonId' => '\d+']
     )]
     public function winsLosses(
         Request $request,
         EntityManagerInterface $entityManager,
-        int $idSeason,
+        int $seasonId,
     ): Response {
-        $idPlayer = $request->query->getInt('idPlayer');
+        $playerId = $request->query->getInt('playerId');
 
         /** @var ?Player */
-        $player = $entityManager->find(Player::class, $idPlayer);
-        $playerTag = $player?->getTag() ?: "Unknown($idPlayer)";
+        $player = $entityManager->find(Player::class, $playerId);
+        $playerTag = $player?->getTag() ?: "Unknown($playerId)";
 
         /** @var ?Season */
-        $season = $entityManager->find(Season::class, $idSeason);
+        $season = $entityManager->find(Season::class, $seasonId);
         if (!$season) {
             return $this->redirectToRoute('app_ranking_season_crud');
         }
@@ -177,8 +177,8 @@ class RankingController extends AbstractController
         $query = new FetchWinsLosses();
         [$wins, $losses] = $query->getData(
             entityManager: $entityManager,
-            idSeason: $idSeason,
-            idPlayer: $idPlayer,
+            seasonId: $seasonId,
+            playerId: $playerId,
         );
 
         return $this->render(
@@ -193,34 +193,34 @@ class RankingController extends AbstractController
     }
 
     #[Route(
-        '/ranking/season/{idSeason}/ranking',
+        '/ranking/season/{seasonId}/ranking',
         name: 'app_ranking_season_ranking',
-        requirements: ['idSeason' => '\d+']
+        requirements: ['seasonId' => '\d+']
     )]
     public function rankings(
         EntityManagerInterface $entityManager,
-        int $idSeason,
+        int $seasonId,
     ): Response {
         /** @var ?Season */
-        $season = $entityManager->find(Season::class, $idSeason);
+        $season = $entityManager->find(Season::class, $seasonId);
         if (!$season) {
             return $this->redirectToRoute('app_ranking_season_crud');
         }
 
         $query = new FetchRankings();
-        $existingRankings = $query->getData($entityManager, $idSeason);
+        $existingRankings = $query->getData($entityManager, $seasonId);
 
         $rankings = [];
         foreach(range(1, 20) as $rank) {
             $existingData = $existingRankings[$rank] ?? [];
             $rankings[] = new class (
                 rank: $rank,
-                idPlayer: $existingData['idPlayer'] ?? 0,
+                playerId: $existingData['playerId'] ?? 0,
                 playerTag: $existingData['playerTag'] ?? '',
             ) {
                 public function __construct(
                     public int $rank,
-                    public int $idPlayer,
+                    public int $playerId,
                     public string $playerTag,
                 ) {
                 }
@@ -232,7 +232,7 @@ class RankingController extends AbstractController
             [
                 'seasonName' => $season->getName(),
                 'updateAction' => $this->generateUrl('app_action_updateRankings'),
-                'idSeason' => $idSeason,
+                'seasonId' => $seasonId,
                 'rankings' => $rankings,
             ],
         );

@@ -102,13 +102,13 @@ class CrudController extends AbstractController
                 new LinkData($this->generateUrl(
                     route: 'app_crud_players_sets',
                     parameters: [
-                        'idPlayer' => $player['id']
+                        'playerId' => $player['id']
                     ],
                 ), 'Sets'),
                 new LinkData($this->generateUrl(
                     route: 'app_import_player_events',
                     parameters: [
-                        'idPlayer' => $player['id']
+                        'playerId' => $player['id']
                     ],
                 ), 'Import'),
             ];
@@ -170,14 +170,14 @@ class CrudController extends AbstractController
     }
 
     #[Route(
-        '/crud/players/{idPlayer}/sets',
+        '/crud/players/{playerId}/sets',
         name: 'app_crud_players_sets',
-        requirements: ['idPlayer' => '\d+']
+        requirements: ['playerId' => '\d+']
     )]
     public function setCrud(
         Request $request,
         EntityManagerInterface $entityManager,
-        int $idPlayer,
+        int $playerId,
     ): Response {
         $setRepo = $entityManager->getRepository(Set::class);
 
@@ -192,12 +192,12 @@ class CrudController extends AbstractController
         $filterForm->handleRequest($request);
 
         /** @var ?Player */
-        $player = $entityManager->find(Player::class, $idPlayer);
+        $player = $entityManager->find(Player::class, $playerId);
 
         $sets = $this->fetchSets(
             $request,
             $setRepo,
-            $idPlayer,
+            $playerId,
         );
 
         $setData = [];
@@ -228,7 +228,7 @@ class CrudController extends AbstractController
                 'filterForm' => $filterForm,
                 'setData' => $setData,
                 'playerTag' => $player?->getTag() ?? 'unknown',
-                'idPlayer' => $idPlayer,
+                'playerId' => $playerId,
                 'deleteSetsRoute' => $this->generateUrl('app_action_deleteSets'),
             ],
         );

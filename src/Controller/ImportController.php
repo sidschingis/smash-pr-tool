@@ -14,12 +14,12 @@ class ImportController extends AbstractApiController
     public const ROUTE_IMPORT_SETS = 'app_import_player_sets';
 
     #[Route(
-        '/import/player/{idPlayer}/sets',
+        '/import/player/{playerId}/sets',
         name: ImportController::ROUTE_IMPORT_SETS,
-        requirements: ['idPlayer' => '\d+']
+        requirements: ['playerId' => '\d+']
     )]
     public function playerSets(
-        int $idPlayer
+        int $playerId
     ): Response {
         $httpRequest = Request::createFromGlobals();
 
@@ -29,7 +29,7 @@ class ImportController extends AbstractApiController
         $startTime = $queryParams->getInt('startTime');
 
         $query = new SetsForPlayer(
-            playerId: $idPlayer,
+            playerId: $playerId,
             tournamentIds: $tournamentIds,
             startTimeStamp: $startTime,
         );
@@ -50,13 +50,13 @@ class ImportController extends AbstractApiController
     }
 
     #[Route(
-        '/import/player/{idPlayer}/events',
+        '/import/player/{playerId}/events',
         name: 'app_import_player_events',
-        requirements: ['idPlayer' => '\d+']
+        requirements: ['playerId' => '\d+']
     )]
-    public function playerTournaments(int $idPlayer): Response
+    public function playerTournaments(int $playerId): Response
     {
-        $query = new TournamentsForPlayer(playerId: $idPlayer);
+        $query = new TournamentsForPlayer(playerId: $playerId);
 
         $response = $this->sendRequest($query);
 
@@ -67,7 +67,7 @@ class ImportController extends AbstractApiController
         $route = $this->generateUrl(
             ImportController::ROUTE_IMPORT_SETS,
             parameters: [
-                'idPlayer' => $idPlayer,
+                'playerId' => $playerId,
             ],
         );
 

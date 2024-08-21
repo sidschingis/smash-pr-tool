@@ -13,10 +13,10 @@ class FetchRankings
      */
     public function getData(
         EntityManagerInterface $entityManager,
-        int $idSeason,
+        int $seasonId,
     ): array {
         $sql = $this->getQuery(
-            idSeason: $idSeason,
+            seasonId: $seasonId,
         );
 
         $rsm = new ResultSetMapping();
@@ -33,7 +33,7 @@ class FetchRankings
         foreach($rawData as $row) {
             $rank = $row['rank'];
             $data[$rank] = [
-                'idPlayer' => $row['player_id'],
+                'playerId' => $row['player_id'],
                 'playerTag' => $row['player_tag'],
             ];
         }
@@ -42,7 +42,7 @@ class FetchRankings
     }
 
     private function getQuery(
-        int $idSeason,
+        int $seasonId,
     ): string {
         return <<<EOD
             SELECT
@@ -51,7 +51,7 @@ class FetchRankings
                 , COALESCE(p.tag,'') player_tag
             FROM "rank" r
             LEFT JOIN player p ON (p.id = r.player_id)
-            WHERE r.season_id = $idSeason
+            WHERE r.season_id = $seasonId
             ORDER BY r.rank ASC
             ;
         EOD;

@@ -13,7 +13,7 @@ class UpdateRankings
     }
 
     public function updateRankings(
-        int $idSeason,
+        int $seasonId,
         array $ranking,
     ): void {
         $entityManager = $this->entityManager;
@@ -23,7 +23,7 @@ class UpdateRankings
         /** @var Rank[] */
         $existingRankings = $rankRepo->findBy(
             criteria:[
-                'seasonId' => $idSeason,
+                'seasonId' => $seasonId,
             ],
         );
 
@@ -35,10 +35,10 @@ class UpdateRankings
             unset($ranking[$rank]);
         }
 
-        foreach ($ranking as $rank => $idPlayer) {
+        foreach ($ranking as $rank => $playerId) {
             $newRank = new Rank(
-                seasonId:$idSeason,
-                playerId: $idPlayer,
+                seasonId: $seasonId,
+                playerId: $playerId,
                 rank: $rank,
             );
 

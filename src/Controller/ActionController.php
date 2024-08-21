@@ -80,7 +80,7 @@ class ActionController extends AbstractApiController
         return $this->redirectToRoute(
             route: 'app_crud_players_sets',
             parameters:[
-                'idPlayer' => $request->request->getString('idPlayer'),
+                'playerId' => $request->request->getString('playerId'),
             ],
         );
     }
@@ -90,17 +90,17 @@ class ActionController extends AbstractApiController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        $idSeason = $request->request->getInt('idSeason');
+        $seasonId = $request->request->getInt('seasonId');
 
-        $ranking = $request->request->all()['idPlayer'] ?? [];
+        $ranking = $request->request->all()['playerId'] ?? [];
 
         $action = new UpdateRankings($entityManager);
-        $action->updateRankings($idSeason, $ranking);
+        $action->updateRankings($seasonId, $ranking);
 
         return $this->redirectToRoute(
             route: 'app_ranking_season_ranking',
             parameters:[
-                'idSeason' => $idSeason,
+                'seasonId' => $seasonId,
             ],
         );
     }
