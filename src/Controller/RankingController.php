@@ -91,6 +91,12 @@ class RankingController extends AbstractController
                     ]),
                     'Details',
                 ),
+                new LinkData(
+                    $this->generateUrl('app_ranking_season_ranking', [
+                        'idSeason' => $entity['id'],
+                    ]),
+                    'Ranking',
+                ),
             ];
 
             $seasonData = new class (
@@ -145,7 +151,6 @@ class RankingController extends AbstractController
         );
     }
 
-
     #[Route(
         '/ranking/season/{idSeason}/winsLosses',
         name: 'app_ranking_season_winsLosses',
@@ -156,8 +161,9 @@ class RankingController extends AbstractController
         EntityManagerInterface $entityManager,
         int $idSeason,
     ): Response {
-        /** @var ?Player */
         $idPlayer = $request->query->getInt('idPlayer');
+
+        /** @var ?Player */
         $player = $entityManager->find(Player::class, $idPlayer);
         $playerTag = $player?->getTag() ?: "Unknown($idPlayer)";
 
@@ -181,6 +187,49 @@ class RankingController extends AbstractController
                 'playerTag' => $playerTag,
                 'wins' => $wins,
                 'losses' => $losses,
+            ],
+        );
+    }
+
+    #[Route(
+        '/ranking/season/{idSeason}/ranking',
+        name: 'app_ranking_season_ranking',
+        requirements: ['idSeason' => '\d+']
+    )]
+    public function rankings(
+        EntityManagerInterface $entityManager,
+        int $idSeason,
+    ): Response {
+        /** @var ?Season */
+        $season = $entityManager->find(Season::class, $idSeason);
+        if (!$season) {
+            return $this->redirectToRoute('app_ranking_season_crud');
+        }
+
+        $existingRankings = [];
+
+        $rankings = [];
+        foreach(range(1, 20) as $rank) {
+            $existingData = $existingRankings[$rank] ?? [];
+            $rankings[] = new class (
+                rank: $rank,
+                idPlayer: $existingData['idPlayer'] ?? 0,
+                playerTag: $existingData['playerTag'] ?? '',
+            ) {
+                public function __construct(
+                    public int $rank,
+                    public int $idPlayer,
+                    public string $playerTag,
+                ) {
+                }
+            };
+        }
+
+        return $this->render(
+            'ranking/season_ranking.html.twig',
+            [
+                'seasonName' => $season->getName(),
+                'rankings' => $rankings,
             ],
         );
     }
