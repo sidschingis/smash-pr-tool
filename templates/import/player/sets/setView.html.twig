@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Player Tournaments{% endblock %}
+{% set titleString = 'Import sets for' ~ playerTag %}
+
+{% block title %}{{titleString}}{% endblock %}
 
 {% block body %}
 <section id="ImportSets">
-    <h2>Import sets for {{ playerName }}</h2>
+    <h2>{{titleString}}</h2>
 
     <form class="d-grid" action="{{action}}" method="post">
         <input type="hidden" name="playerId" value="{{playerId}}">

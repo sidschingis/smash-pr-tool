@@ -227,7 +227,7 @@ class CrudController extends AbstractController
             [
                 'filterForm' => $filterForm,
                 'setData' => $setData,
-                'playerName' => $player?->getTag() ?? 'unknown',
+                'playerTag' => $player?->getTag() ?? 'unknown',
                 'idPlayer' => $idPlayer,
                 'deleteSetsRoute' => $this->generateUrl('app_action_deleteSets'),
             ],

@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wins/Losses for {{playerTag}}{% endblock %}
+{% set titleString = seasonName ~ ': Wins/Losses for ' ~ playerTag %}
+
+{% block title %}{{titleString}}{% endblock %}
 
 {% block body %}
-<h1>Wins/Losses for {{playerTag}}</h1>
+<h2>{{titleString}}</h2>
 
 <div id="WinsLosses">
     <section id="Wins">

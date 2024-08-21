@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sets for {{ playerName }}{% endblock %}
+{% set titleString = 'Sets for ' ~ playerTag %}
+
+{% block title %}{{titleString}}{% endblock %}
 
 {% block body %}
 <section id="SetCrud" class="crud-container">
-    <h2>Sets for {{ playerName }}</h2>
+    <h2>{{titleString}}</h2>
 
     <h3>Filter Sets </h3>
     {{form(filterForm)}}

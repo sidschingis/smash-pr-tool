@@ -42,7 +42,7 @@ class ImportController extends AbstractApiController
             'import/player/sets/setView.html.twig',
             [
                 'action'     => $this->generateUrl('app_action_importSets'),
-                'playerName' => $sets->playerName,
+                'playerTag' => $sets->playerTag,
                 'playerId' => $sets->playerId,
                 'eventInfos' => $sets->eventInfos,
             ],
@@ -93,7 +93,7 @@ class ImportController extends AbstractApiController
             'import/player/tournaments/tournamentSelect.html.twig',
             [
                 'debug' => $debug,
-                'playerName' => $tournamentData->name,
+                'playerTag' => $tournamentData->name,
                 'tournaments' => $tournaments,
                 'form' => $form,
                 'route' => $route,
