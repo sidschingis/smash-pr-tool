@@ -43,6 +43,7 @@ services:
 ###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION}-alpine
+    restart: unless-stopped
     env_file:
       - .env.local
     environment:
