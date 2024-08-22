@@ -1,8 +1,8 @@
 {
-    "name": "symfony/skeleton",
+    "name": "sidschingis/pr-data-tool",
     "type": "project",
     "license": "MIT",
-    "description": "A minimal Symfony project recommended to create bare bones applications",
+    "description": "A tool to help aggregating start.gg data for PR Panels",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
