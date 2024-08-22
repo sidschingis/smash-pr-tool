@@ -2,12 +2,12 @@
 
 namespace App\ControllerData;
 
-use App\Entity\Set;
+use App\Objects\Set\ImportSet;
 
 class EventData
 {
     /**
-     * @param Set[] $sets
+     * @param ImportSet[] $sets
      */
     public function __construct(
         public string $tournamentName,

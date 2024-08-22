@@ -39,7 +39,8 @@ class ImportSets
         foreach ($setData->eventInfos as $eventData) {
             $sets = $eventData->sets;
 
-            foreach ($sets as $set) {
+            foreach ($sets as $importSet) {
+                $set = $importSet->set;
                 $setIds[] = $set->getId();
             }
         }
@@ -64,7 +65,8 @@ class ImportSets
         foreach ($setData->eventInfos as $eventData) {
             $sets = $eventData->sets;
 
-            foreach ($sets as $set) {
+            foreach ($sets as $importSet) {
+                $set = $importSet->set;
                 $id = $set->getId();
                 if (array_key_exists($id, $existingIds)) {
                     continue;

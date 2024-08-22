@@ -11,11 +11,11 @@ class Player
     public function __construct(
         #[ORM\Id]
         #[ORM\Column]
-        private ?int $id = null,
+        private ?int $id = 0,
         #[ORM\Column(length: 20)]
-        private ?string $tag = null,
+        private ?string $tag = '',
         #[ORM\Column(length: 50)]
-        private ?string $twitterTag = null,
+        private ?string $twitterTag = '',
     ) {
     }
 

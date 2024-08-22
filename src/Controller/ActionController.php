@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Action\Ranking\ImportMissingPlayers;
 use App\Action\Ranking\UpdateRankings;
 use App\Action\Sets\DeleteSets;
 use App\Action\Sets\ImportSets;
@@ -53,10 +54,20 @@ class ActionController extends AbstractApiController
             )
         );
 
+        $importPlayers = new ImportMissingPlayers($entityManager);
+        $playerResult = $importPlayers->importPlayers($sets);
+
+        $playerData = implode(
+            PHP_EOL,
+            $playerResult
+        );
+
         $response = <<<EOD
         <pre>
         Sets imported:
         $setData
+        New Players:
+        $playerData
         </pre>
         EOD;
 

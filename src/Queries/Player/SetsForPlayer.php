@@ -6,6 +6,7 @@ use App\ControllerData\EventData;
 use App\ControllerData\SetData;
 use App\Entity\Set;
 use App\GraphQL\Query\AbstractQuery;
+use App\Objects\Set\ImportSet;
 use App\Objects\Tournament;
 use App\Util\JsonSerializer;
 use DateTimeImmutable;
@@ -68,14 +69,15 @@ class SetsForPlayer extends AbstractQuery
 
             [$match, $p1Name, $p1Wins, $p2Name, $p2Wins] = $matches;
 
-            $winnerName = ((int) $p1Wins > (int) $p2Wins) ? $p1Name : $p2Name;
+            [$winnerTag, $loserTag] = ((int) $p1Wins > (int) $p2Wins) ? [$p1Name, $p2Name] : [$p2Name, $p1Name] ;
+
 
             $slots = $rawNode?->slots ?? [];
             foreach ($slots as $slot) {
                 $id =  $slot->entrant?->participants[0]?->player?->id;
                 $name =  $slot->entrant?->name;
 
-                if ($name === $winnerName) {
+                if ($name === $winnerTag) {
                     $winnerId = $id;
                 } else {
                     $loserId = $id;
@@ -92,7 +94,7 @@ class SetsForPlayer extends AbstractQuery
 
             /** @var EventData */
             $eventData = $eventInfos[$eventId];
-            $eventData->sets[] = $newSet;
+            $eventData->sets[] = new ImportSet(set: $newSet, winnerTag:$winnerTag, loserTag: $loserTag);
         }
 
         return $eventInfos;
