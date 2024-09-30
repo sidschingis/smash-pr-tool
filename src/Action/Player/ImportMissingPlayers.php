@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Action\Ranking;
+namespace App\Action\Player;
 
 use App\ControllerData\SetData;
 use App\Entity\Player;
