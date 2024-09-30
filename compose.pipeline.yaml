@@ -1,4 +1,4 @@
-# Development environment override
+# Pipeline environment override
 services:
   php:
     build:
@@ -20,7 +20,7 @@ services:
       - host.docker.internal:host-gateway
     tty: true
     env_file:
-      - .env.local
+      - .env.pipeline
 
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
@@ -30,5 +30,5 @@ services:
     ports:
       - "5432"
     env_file:
-      - .env.local
+      - .env.pipeline
 ###< doctrine/doctrine-bundle ###

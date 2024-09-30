@@ -33,8 +33,6 @@ services:
       - target: 443
         published: ${HTTP3_PORT:-443}
         protocol: udp
-    env_file:
-      - .env.local
 
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
@@ -44,8 +42,6 @@ services:
   database:
     image: postgres:${POSTGRES_VERSION}-alpine
     restart: unless-stopped
-    env_file:
-      - .env.local
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       # You should definitely change the password in production
