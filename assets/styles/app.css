@@ -125,6 +125,12 @@ body {
     }
 }
 
+#PlayerCrud {
+    form.edit-form:hover {
+        background-color: var(--color-highlight);
+    }
+}
+
 #ImportSets {
     .set-container {
         display: flex;
