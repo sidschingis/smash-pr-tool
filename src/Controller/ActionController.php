@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Action\Ranking\ImportMissingPlayers;
+use App\Action\Player\ImportMissingPlayers;
 use App\Action\Ranking\UpdateRankings;
 use App\Action\Sets\DeleteSets;
 use App\Action\Sets\ImportSets;
