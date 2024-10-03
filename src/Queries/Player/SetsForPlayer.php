@@ -89,8 +89,7 @@ class SetsForPlayer extends AbstractQuery
             $newSet->setLoserId($loserId);
             $newSet->setDisplayScore($displayScore);
             $newSet->setDate((new DateTimeImmutable(timezone: $timeZone))->setTimestamp($startTime));
-            $newSet->setEventName($eventName);
-            $newSet->setTournamentName($tournamentName);
+            $newSet->setEventId($eventId);
 
             /** @var EventData */
             $eventData = $eventInfos[$eventId];

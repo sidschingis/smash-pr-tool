@@ -13,27 +13,22 @@ use Doctrine\ORM\Mapping\Index;
 #[Index(name: 'by_loser', fields: ['loserId', 'date'])]
 class Set
 {
-    #[ORM\Id]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column]
-    private ?int $winnerId = null;
-
-    #[ORM\Column]
-    private ?int $loserId = null;
-
-    #[ORM\Column(length: 50)]
-    private ?string $displayScore = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?DateTimeInterface $date = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $eventName = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $tournamentName = null;
+    public function __construct(
+        #[ORM\Id]
+        #[ORM\Column]
+        private ?int $id = null,
+        #[ORM\Column]
+        private ?int $winnerId = null,
+        #[ORM\Column]
+        private ?int $loserId = null,
+        #[ORM\Column(length: 50)]
+        private ?string $displayScore = null,
+        #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+        private ?DateTimeInterface $date = null,
+        #[ORM\Column(options:['default' => 0])]
+        private int $eventId = 0,
+    ) {
+    }
 
     public function getId(): ?int
     {
@@ -47,14 +42,14 @@ class Set
         return $this;
     }
 
-    public function getEventName(): ?string
+    public function getEventId(): ?int
     {
-        return $this->eventName;
+        return $this->eventId;
     }
 
-    public function setEventName(string $eventName): static
+    public function setEventId(int $eventId): static
     {
-        $this->eventName = $eventName;
+        $this->eventId = $eventId;
 
         return $this;
     }
@@ -67,18 +62,6 @@ class Set
     public function setWinnerId(int $winnerId): static
     {
         $this->winnerId = $winnerId;
-
-        return $this;
-    }
-
-    public function getTournamentName(): ?string
-    {
-        return $this->tournamentName;
-    }
-
-    public function setTournamentName(string $tournamentName): static
-    {
-        $this->tournamentName = $tournamentName;
 
         return $this;
     }
