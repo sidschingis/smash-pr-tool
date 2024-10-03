@@ -22,6 +22,14 @@ class AddPlayerForm extends AbstractType
                     'empty_data' => '',
                 ]
             )
+            ->add(
+                'region',
+                TextType::class,
+                options: [
+                    'required' => false,
+                    'empty_data' => '',
+                ]
+            )
             ->add('Add', SubmitType::class);
     }
 }

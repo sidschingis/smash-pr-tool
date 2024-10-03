@@ -80,6 +80,7 @@ class CrudController extends AbstractController
                 } else {
                     $player->setTwitterTag($data['twitterTag']);
                     $player->setTag($data['tag']);
+                    $player->setRegion($data['region']);
                     $entityManager->persist($player);
                 }
 
@@ -151,6 +152,13 @@ class CrudController extends AbstractController
             $like = $querybuilder->expr()->like('p.tag', ':tag');
             $querybuilder->andWhere($like);
             $querybuilder->setParameter('tag', '%' . addcslashes($tag, '%_') . '%');
+        }
+
+        $region = $request->query->getString('regionFilter');
+        if ($region) {
+            $like = $querybuilder->expr()->like('p.region', ':region');
+            $querybuilder->andWhere($like);
+            $querybuilder->setParameter('region', '%' . addcslashes($region, '%_') . '%');
         }
 
         $id = $request->query->getString('idFilter');

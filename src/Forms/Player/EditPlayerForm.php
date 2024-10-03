@@ -30,6 +30,14 @@ class EditPlayerForm extends AbstractType
                     'empty_data' => '',
                 ]
             )
+            ->add(
+                'region',
+                TextType::class,
+                options: [
+                    'required' => false,
+                    'empty_data' => '',
+                ]
+            )
             ->add('edit', SubmitType::class)
             ->add('delete', SubmitType::class);
     }

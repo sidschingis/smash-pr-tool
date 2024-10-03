@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
+#[Index(name: 'search_tag', fields: ['tag'])]
+#[Index(name: 'search_region', fields: ['region'])]
 class Player
 {
     public function __construct(
@@ -16,19 +19,14 @@ class Player
         private ?string $tag = '',
         #[ORM\Column(length: 50)]
         private ?string $twitterTag = '',
+        #[ORM\Column(length: 50, options:['default' => ''])]
+        private ?string $region = '',
     ) {
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(string $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getTag(): ?string
@@ -51,6 +49,18 @@ class Player
     public function setTwitterTag(string $twitterTag): static
     {
         $this->twitterTag = $twitterTag;
+
+        return $this;
+    }
+
+    public function getRegion(): ?string
+    {
+        return $this->region;
+    }
+
+    public function setRegion(string $region): static
+    {
+        $this->region = $region;
 
         return $this;
     }

@@ -30,6 +30,14 @@ class FilterPlayerForm extends AbstractType
                     'empty_data' => '',
                 ]
             )
+            ->add(
+                'regionFilter',
+                TextType::class,
+                options: [
+                    'required' => false,
+                    'empty_data' => '',
+                ]
+            )
             ->add('filter', SubmitType::class);
     }
 
