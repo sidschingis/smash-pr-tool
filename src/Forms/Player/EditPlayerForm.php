@@ -2,6 +2,7 @@
 
 namespace App\Forms\Player;
 
+use App\Enum\Player\Field;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,7 +14,7 @@ class EditPlayerForm extends AbstractType
     {
         $builder
             ->add(
-                'id',
+                Field::ID->value,
                 TextType::class,
                 options: [
                     'attr' => [
@@ -21,9 +22,9 @@ class EditPlayerForm extends AbstractType
                     ],
                 ],
             )
-            ->add('tag', TextType::class)
+            ->add(Field::TAG->value, TextType::class)
             ->add(
-                'twitterTag',
+                Field::TWITTER->value,
                 TextType::class,
                 options: [
                     'required' => false,
@@ -31,7 +32,7 @@ class EditPlayerForm extends AbstractType
                 ]
             )
             ->add(
-                'region',
+                Field::REGION->value,
                 TextType::class,
                 options: [
                     'required' => false,

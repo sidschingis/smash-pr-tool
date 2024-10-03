@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Enum\Player\Field;
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
-#[Index(name: 'search_tag', fields: ['tag'])]
-#[Index(name: 'search_region', fields: ['region'])]
+#[Index(name: 'search_tag', fields: [Field::TAG->value])]
+#[Index(name: 'search_region', fields: [Field::REGION->value])]
 class Player
 {
     public function __construct(

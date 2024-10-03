@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Player;
 use App\Entity\Set;
+use App\Enum\Player\Field as PlayerField;
+use App\Enum\Player\Filter as PlayerFilter;
 use App\Forms\Player\AddPlayerForm;
 use App\Forms\Player\EditPlayerForm;
 use App\Forms\Player\FilterPlayerForm;
@@ -71,16 +73,16 @@ class CrudController extends AbstractController
             $data = $editForm->getData();
 
             /** @var Player */
-            $player = $entityManager->find(Player::class, $data['id'] ?? 0);
+            $player = $entityManager->find(Player::class, $data[PlayerField::ID->value] ?? 0);
             if ($player) {
                 /** @var ClickableInterface */
                 $deleteButton = $editForm->get('delete');
                 if ($deleteButton->isClicked()) {
                     $entityManager->remove($player);
                 } else {
-                    $player->setTwitterTag($data['twitterTag']);
-                    $player->setTag($data['tag']);
-                    $player->setRegion($data['region']);
+                    $player->setTwitterTag($data[PlayerField::TWITTER]);
+                    $player->setTag($data[PlayerField::TAG]);
+                    $player->setRegion($data[PlayerField::REGION]);
                     $entityManager->persist($player);
                 }
 
@@ -103,13 +105,13 @@ class CrudController extends AbstractController
                 new LinkData($this->generateUrl(
                     route: 'app_crud_players_sets',
                     parameters: [
-                        'playerId' => $player['id']
+                        'playerId' => $player[PlayerField::ID->value]
                     ],
                 ), 'Sets'),
                 new LinkData($this->generateUrl(
                     route: 'app_import_player_events',
                     parameters: [
-                        'playerId' => $player['id']
+                        'playerId' => $player[PlayerField::ID->value]
                     ],
                 ), 'Import'),
             ];
@@ -147,23 +149,23 @@ class CrudController extends AbstractController
     ): array {
         $querybuilder = $repository->createQueryBuilder('p');
 
-        $tag = $request->query->getString('tagFilter');
+        $tag = $request->query->getString(PlayerFilter::TAG->value);
         if ($tag) {
-            $like = $querybuilder->expr()->like('p.tag', ':tag');
+            $like = $querybuilder->expr()->like('p.' . PlayerField::TAG->value, ':tag');
             $querybuilder->andWhere($like);
             $querybuilder->setParameter('tag', '%' . addcslashes($tag, '%_') . '%');
         }
 
-        $region = $request->query->getString('regionFilter');
+        $region = $request->query->getString(PlayerFilter::REGION->value);
         if ($region) {
-            $like = $querybuilder->expr()->like('p.region', ':region');
+            $like = $querybuilder->expr()->like('p' . PlayerField::REGION->value, ':region');
             $querybuilder->andWhere($like);
             $querybuilder->setParameter('region', '%' . addcslashes($region, '%_') . '%');
         }
 
-        $id = $request->query->getString('idFilter');
+        $id = $request->query->getString(PlayerFilter::ID->value);
         if ($id) {
-            $querybuilder->andWhere("p.id = :id")
+            $querybuilder->andWhere('p.' . PlayerField::ID->value . ' = :id')
                 ->setParameter('id', $id);
         }
         $query = $querybuilder
@@ -227,7 +229,6 @@ class CrudController extends AbstractController
                     $this->dateString = $date->format('Y-m-d');
                 }
             };
-
         }
 
         return $this->render(

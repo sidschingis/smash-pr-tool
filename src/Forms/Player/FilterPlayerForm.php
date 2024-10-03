@@ -2,6 +2,7 @@
 
 namespace App\Forms\Player;
 
+use App\Enum\Player\Filter;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,7 +16,7 @@ class FilterPlayerForm extends AbstractType
         $builder
             ->setMethod('GET')
             ->add(
-                'idFilter',
+                Filter::ID->value,
                 TextType::class,
                 options: [
                     'required' => false,
@@ -23,7 +24,7 @@ class FilterPlayerForm extends AbstractType
                 ]
             )
             ->add(
-                'tagFilter',
+                Filter::TAG->value,
                 TextType::class,
                 options: [
                     'required' => false,
@@ -31,7 +32,7 @@ class FilterPlayerForm extends AbstractType
                 ]
             )
             ->add(
-                'regionFilter',
+                Filter::REGION->value,
                 TextType::class,
                 options: [
                     'required' => false,
