@@ -4,10 +4,14 @@ namespace App\Objects;
 
 class Tournament
 {
+    /**
+     * @param EventData[] $events
+     */
     public function __construct(
         public readonly int $id,
         public readonly string $name,
         public readonly int $startTime,
+        public readonly array $events = [],
     ) {
     }
 
@@ -18,6 +22,10 @@ class Tournament
             id
             name
             startAt
+            events(limit: 50){
+                id
+                name
+            }
         }
         END;
     }

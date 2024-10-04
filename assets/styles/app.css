@@ -109,6 +109,22 @@ body {
 }
 
 /* Route Specific */
+#Events {
+    #eventIds {
+        display: flex;
+        flex-wrap: wrap;
+
+        label {
+            width: calc(100% - 32px);
+        }
+
+        label:hover {
+            cursor: pointer;
+            background-color: var(--color-highlight);
+        }
+    }
+}
+
 #Tournaments {
     #tournamentIds {
         display: flex;
