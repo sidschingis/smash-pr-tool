@@ -15,18 +15,23 @@ class Tournament
     ) {
     }
 
-    public static function AsQuery(): string
+    public static function AsQuery(bool $withEvents = false): string
     {
-        return <<<END
+        $eventData = $withEvents ?
+        <<<EOD
+        events(limit: 50){
+                id
+                name
+        }
+        EOD
+        :'';
+        return <<<EOD
         {
             id
             name
             startAt
-            events(limit: 50){
-                id
-                name
-            }
+            $eventData
         }
-        END;
+        EOD;
     }
 }

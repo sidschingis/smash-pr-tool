@@ -17,7 +17,7 @@ class EventForm extends AbstractType
         $choices = $data['choices'] ?? [];
         $action = $data['action'] ?? [];
 
-        $builder->setMethod('GET');
+        $builder->setMethod('POST');
         $builder->setAction($action);
 
         $builder->add(

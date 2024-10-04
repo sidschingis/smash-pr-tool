@@ -7,7 +7,6 @@ use App\ControllerData\SetData;
 use App\Entity\Set;
 use App\GraphQL\Query\AbstractQuery;
 use App\Objects\Set\ImportSet;
-use App\Objects\Tournament;
 use App\Util\JsonSerializer;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -20,7 +19,8 @@ class SetsForPlayer extends AbstractQuery
     {
         $data = (new JsonSerializer())->deserialize($json);
 
-        $eventInfos = self::GetEventInfos($data);
+        $nodes = $data?->data?->player?->sets?->nodes ?? [];
+        $eventInfos = self::GetEventInfos($nodes);
 
         return new SetData(
             playerTag: $data?->data?->player?->gamerTag ?? '',
@@ -32,10 +32,8 @@ class SetsForPlayer extends AbstractQuery
     /**
      * @return EventData[]
      */
-    public static function GetEventInfos(object $data): array
+    public static function GetEventInfos(array $nodes): array
     {
-        $nodes = $data?->data?->player?->sets?->nodes ?? [];
-
         $matches = [];
         $winnerRegex = '/(.*) (\\d) - (.*) (\\d)/';
         $timeZone = new DateTimeZone('UTC');
@@ -47,7 +45,6 @@ class SetsForPlayer extends AbstractQuery
 
             $displayScore  = $rawNode->displayScore ?? '';
             $startTime = $rawNode?->event?->tournament?->startAt ?? 0;
-
             $isMatch = preg_match($winnerRegex, $displayScore, $matches);
             if (!$isMatch) {
                 /**
@@ -114,7 +111,7 @@ class SetsForPlayer extends AbstractQuery
      */
     protected function getQuery(): string
     {
-        $tournament = Tournament::AsQuery();
+        $set = ImportSet::AsQuery();
         $playerId = $this->playerId;
         $perPage = $this->perPage;
         $page = $this->page;
@@ -134,26 +131,7 @@ class SetsForPlayer extends AbstractQuery
                   eventIds: [$eventIds],
                   updatedAfter: $startTimeStamp,
                 }) {
-                  nodes {
-                    id
-                    displayScore
-                    slots {
-                      entrant {
-                        name
-                        participants {
-                            player {
-                                id
-                            }
-                        }
-                      }
-                    }
-                    event {
-                      id
-                      name
-                      tournament $tournament
-                    }
-                  }
-                }
+                  nodes $set
             }
         }
         END;

@@ -2,7 +2,6 @@
 
 namespace App\Action\Sets;
 
-use App\ControllerData\SetData;
 use App\Entity\Set;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -13,11 +12,14 @@ class ImportSets
     ) {
     }
 
-    public function importSets(SetData $setData): bool
+    /**
+     * @param ImportSet[] $importSets
+     */
+    public function importSets(array $importSets): bool
     {
         $entityManager = $this->entityManager;
 
-        $newSets = $this->filterSets($setData);
+        $newSets = $this->filterSets($importSets);
 
         foreach ($newSets as $set) {
             $entityManager->persist($set);
@@ -29,20 +31,17 @@ class ImportSets
     }
 
     /**
+     * @param ImportSet[] $importSets
      * @return Set[]
      */
-    private function filterSets(SetData $setData): array
+    private function filterSets(array $importSets): array
     {
         $entityManager = $this->entityManager;
 
         $setIds = [];
-        foreach ($setData->eventInfos as $eventData) {
-            $sets = $eventData->sets;
-
-            foreach ($sets as $importSet) {
-                $set = $importSet->set;
-                $setIds[] = $set->getId();
-            }
+        foreach ($importSets as $importSet) {
+            $set = $importSet->set;
+            $setIds[] = $set->getId();
         }
 
         $setRepo = $entityManager->getRepository(Set::class);
@@ -62,18 +61,14 @@ class ImportSets
 
         $newSets = [];
 
-        foreach ($setData->eventInfos as $eventData) {
-            $sets = $eventData->sets;
-
-            foreach ($sets as $importSet) {
-                $set = $importSet->set;
-                $id = $set->getId();
-                if (array_key_exists($id, $existingIds)) {
-                    continue;
-                }
-
-                $newSets[] = $set;
+        foreach ($importSets as $importSet) {
+            $set = $importSet->set;
+            $id = $set->getId();
+            if (array_key_exists($id, $existingIds)) {
+                continue;
             }
+
+            $newSets[] = $set;
         }
 
         return $newSets;

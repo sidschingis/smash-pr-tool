@@ -69,10 +69,11 @@ class TournamentsForRegion extends AbstractQuery
     protected function getQuery(): string
     {
         $videogameId = GameId::SMASH_ULTIMATE->value;
-        $tournament = Tournament::AsQuery();
+        $tournament = Tournament::AsQuery(withEvents: true);
+        $operation = $this->getOperation();
 
         return <<<EOD
-        query Tournaments{
+        query $operation{
             tournaments(
                 query:{
                     page: $this->page,

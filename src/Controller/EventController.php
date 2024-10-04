@@ -39,10 +39,8 @@ class EventController extends AbstractApiController
 
         $tournaments = $query::JsonToTournaments($response);
 
-        $route = '';
+        $route = $this->generateUrl('app_action_importEvents');
 
-
-        $choices = [];
         foreach ($tournaments as $tournament) {
             $tournamentName = $tournament->name;
             $startAt = (new DateTimeImmutable())->setTimestamp($tournament->startTime);

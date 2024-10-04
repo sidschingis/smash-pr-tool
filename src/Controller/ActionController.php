@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Action\Event\ImportEvents;
 use App\Action\Player\ImportMissingPlayers;
 use App\Action\Ranking\UpdateRankings;
 use App\Action\Sets\DeleteSets;
 use App\Action\Sets\ImportSets;
 use App\ControllerData\EventData;
+use App\Objects\ImportEvent;
+use App\Queries\Event\EventById;
 use App\Queries\Player\SetsForPlayer;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,7 +47,11 @@ class ActionController extends AbstractApiController
 
         //Import sets
         $action = new ImportSets($entityManager);
-        $action->importSets($sets);
+        $importSets = [];
+        foreach ($sets->eventInfos as $importEvent) {
+            $importSets = array_merge($importSets, $importEvent->sets);
+        }
+        $action->importSets($importSets);
 
         //
         $setData = implode(
@@ -114,5 +122,76 @@ class ActionController extends AbstractApiController
                 'seasonId' => $seasonId,
             ],
         );
+    }
+
+    #[Route('/action/importEvents', name: 'app_action_importEvents')]
+    public function importEvents(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $eventIds = $request->request->all()['eventIds'] ?? [];
+
+        if (!$eventIds) {
+            return new Response('No events selected');
+        }
+
+        $importEvents = [];
+        foreach ($eventIds as $eventId) {
+            $eventData = $this->getEventData($eventId);
+            $importEvents = array_merge($importEvents, $eventData);
+        }
+
+        $importer = new ImportEvents(
+            eventManager: $entityManager,
+            setImporter: new ImportSets($entityManager),
+        );
+
+        $importResult = $importer->importEvents($importEvents);
+
+        $response = $importResult ? 'Success' : 'Failure';
+
+        return new Response($response);
+    }
+
+    /**
+     * @return ImportEvent[]
+     */
+    private function getEventData(int $eventId): array
+    {
+        $page = 1;
+
+        $importEvents = [];
+
+        do {
+            $query = new EventById($eventId, setPage: $page);
+
+            $response = $this->sendRequest($query);
+
+            if (strpos($response, "errors") !== false) {
+                $msg = <<<EOD
+                Error querying event: $eventId
+                $response
+                EOD;
+                throw new Exception($msg);
+            }
+
+            $importEvent = $query::JsonToImportData($response);
+
+            if ($importEvent->sets !== []) {
+                /**
+                 * Skip unreported batches
+                 */
+                $importEvents[] = $importEvent;
+            }
+
+            $nextPage = $importEvent->nextPage;
+            if ($nextPage === 0) {
+                return $importEvents;
+            }
+
+            $page = $nextPage;
+
+        } while(1);
+
     }
 }

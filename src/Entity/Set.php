@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping\Index;
 #[ORM\Entity(repositoryClass: SetRepository::class)]
 #[Index(name: 'by_winner', fields: ['winnerId', 'date'])]
 #[Index(name: 'by_loser', fields: ['loserId', 'date'])]
+#[Index(name: 'by_event', fields: ['eventId'])]
 class Set
 {
     public function __construct(
@@ -21,7 +22,7 @@ class Set
         private ?int $winnerId = null,
         #[ORM\Column]
         private ?int $loserId = null,
-        #[ORM\Column(length: 50)]
+        #[ORM\Column(length: 100)]
         private ?string $displayScore = null,
         #[ORM\Column(type: Types::DATE_IMMUTABLE)]
         private ?DateTimeInterface $date = null,
