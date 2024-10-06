@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Player;
 use App\Entity\Set;
 use App\Enum\Player\Field as PlayerField;
 use App\Enum\Player\Filter as PlayerFilter;
+use App\Enum\Event\Field as EventField;
 use App\Forms\Player\AddPlayerForm;
 use App\Forms\Player\EditPlayerForm;
 use App\Forms\Player\FilterPlayerForm;
 use App\Forms\Set\FilterSetsForm;
 use App\Http\LinkData;
-use DateTime;
+use App\Repository\EventRepository;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -190,6 +193,7 @@ class CrudController extends AbstractController
         int $playerId,
     ): Response {
         $setRepo = $entityManager->getRepository(Set::class);
+        $eventRepo = $entityManager->getRepository(Event::class);
 
         $filterForm = $this->createForm(
             FilterSetsForm::class,
@@ -210,10 +214,15 @@ class CrudController extends AbstractController
             $playerId,
         );
 
+        $events =  $this->fetchEvents($sets, $eventRepo);#
+
         $setData = [];
         foreach ($sets as $set) {
+            $data = $set;
+            $eventId = $set['eventId'];
+            $data += $events[$eventId] ?? [];
             $setData[] = new class (
-                ...$set,
+                ...$data,
             ) {
                 public string $dateString;
 
@@ -222,9 +231,10 @@ class CrudController extends AbstractController
                     public int $winnerId,
                     public int $loserId,
                     public string $displayScore,
+                    public string $eventId,
+                    DateTimeInterface $date,
                     public string $eventName,
                     public string $tournamentName,
-                    DateTime $date,
                 ) {
                     $this->dateString = $date->format('Y-m-d');
                 }
@@ -282,5 +292,44 @@ class CrudController extends AbstractController
             ->getResult(Query::HYDRATE_ARRAY);
 
         return $players;
+    }
+
+    /**
+     * @param mixed[][]
+     * @return array<int,<string,<string>>
+     */
+    private function fetchEvents(
+        array $sets,
+        EventRepository $repository,
+    ): array {
+        $querybuilder = $repository->createQueryBuilder('e');
+
+        $querybuilder->select(
+            'e.'.EventField::ID->value,
+            'e.'.EventField::EVENT_NAME->value,
+            'e.'.EventField::TOURNAMENT_NAME->value,
+        );
+
+        $eventIds = [];
+        foreach ($sets as $setData) {
+            $eventIds[] = $setData['eventId'];
+        }
+
+        $querybuilder->andWhere('e.id in (:id)');
+        $querybuilder->setParameter('id', $eventIds);
+
+        $query = $querybuilder
+            ->getQuery();
+
+        $events = $query
+            ->getResult(Query::HYDRATE_ARRAY);
+
+        $indexed = [];
+        foreach($events as $event) {
+            $id = $event[EventField::ID->value];
+            $indexed[$id] = $event;
+        }
+
+        return $indexed;
     }
 }
