@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Forms;
+namespace App\Forms\Event;
 
 use Override;
 use Symfony\Component\Form\AbstractType;
@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class EventForm extends AbstractType
+class ImportEventForm extends AbstractType
 {
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options)

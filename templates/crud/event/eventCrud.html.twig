@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% set titleString = 'Events' %}
+
+{% block title %}{{titleString}}{% endblock %}
+
+{% block body %}
+<section id="EventCrud" class="crud-container">
+    <h2>{{titleString}}</h2>
+
+    <h3>Filter Events </h3>
+    {{form(filterForm)}}
+
+    {{ include("crud/includes/crudContainer.html.twig",
+    {'addTitle': 'Add Event', 'editTitle': 'Edit Events'}) }}
+</section>
+{% endblock %}

@@ -36,4 +36,10 @@ class Event
     {
         return $this->id;
     }
+
+    public function setRegion(string $region): static
+    {
+        $this->region = $region;
+        return $this;
+    }
 }
