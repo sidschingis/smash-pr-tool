@@ -21,4 +21,26 @@ class Placement
         private int $score = 0,
     ) {
     }
+
+    public function getPlayerId(): int
+    {
+        return $this->playerId;
+    }
+
+    public function getEventId(): int
+    {
+        return $this->eventId;
+    }
+
+    public function getPlacement(): int
+    {
+        return $this->placement;
+    }
+
+    public function setScore(int $score): static
+    {
+        $this->score = $score;
+
+        return $this;
+    }
 }

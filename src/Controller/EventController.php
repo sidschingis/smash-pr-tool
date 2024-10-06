@@ -10,7 +10,6 @@ use App\Enum\Event\Filter as EventFilter;
 use App\Forms\Event\AddEventForm;
 use App\Forms\Event\EditEventForm;
 use App\Forms\Event\FilterEventForm;
-use App\Http\LinkData;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -98,12 +97,6 @@ class EventController extends AbstractApiController
             $editForm->setData($event);
 
             $links = [
-                new LinkData($this->generateUrl(
-                    route: 'app_events_import',
-                    parameters: [
-                        'eventId' => $event[EventField::ID->value]
-                    ],
-                ), 'Import'),
             ];
 
             $eventData = new class (
@@ -179,6 +172,7 @@ class EventController extends AbstractApiController
 
         $route = $this->generateUrl('app_action_importEvents');
 
+        $choices = [];
         foreach ($tournaments as $tournament) {
             $tournamentName = $tournament->name;
             $startAt = (new DateTimeImmutable())->setTimestamp($tournament->startTime);

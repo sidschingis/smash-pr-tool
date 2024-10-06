@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Action\Event\ImportEvents;
+use App\Action\Placement\ImportPlacements;
 use App\Action\Player\ImportMissingPlayers;
 use App\Action\Ranking\UpdateRankings;
 use App\Action\Sets\DeleteSets;
 use App\Action\Sets\ImportSets;
 use App\ControllerData\EventData;
+use App\Entity\Placement;
 use App\Objects\ImportEvent;
 use App\Queries\Event\EventById;
+use App\Queries\Placement\PlacementsForEvent;
 use App\Queries\Player\SetsForPlayer;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -148,6 +151,8 @@ class ActionController extends AbstractApiController
 
         $importResult = $importer->importEvents($importEvents);
 
+        $this->importPlacements($eventIds, $entityManager);
+
         $response = $importResult ? 'Success' : 'Failure';
 
         return new Response($response);
@@ -192,6 +197,60 @@ class ActionController extends AbstractApiController
             $page = $nextPage;
 
         } while(1);
+    }
 
+
+    private function importPlacements(
+        array $eventIds,
+        EntityManagerInterface $entityManager,
+    ): bool {
+
+        $importPlacements = [];
+
+        foreach ($eventIds as $eventId) {
+            $placementData =  $this->getPlacementData($eventId);
+            $importPlacements = array_merge($importPlacements, $placementData);
+        }
+
+        $importer = new ImportPlacements($entityManager);
+
+        $importResult = $importer->importPlacements($importPlacements);
+
+        return $importResult;
+    }
+
+    /**
+     * @return Placement[]
+     */
+    private function getPlacementData(int $eventId): array
+    {
+        $page = 1;
+
+        $importPlacements = [];
+        do {
+            $query = new PlacementsForEvent($eventId, standingPage: $page);
+
+            $response = $this->sendRequest($query);
+
+            if (strpos($response, "errors") !== false) {
+                $msg = <<<EOD
+                Error querying event: $eventId
+                $response
+                EOD;
+                throw new Exception($msg);
+            }
+
+            $importPlacement = $query::JsonToImportData($response);
+
+            $importPlacements[] = $importPlacement;
+
+            $nextPage = $importPlacement->nextPage;
+            if ($nextPage === 0) {
+                return $importPlacements;
+            }
+
+            $page = $nextPage;
+
+        } while(1);
     }
 }
