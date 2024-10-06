@@ -73,17 +73,20 @@ class EventController extends AbstractApiController
             $event = $entityManager->find(Event::class, $data[EventField::ID->value] ?? 0);
             if ($event) {
                 /** @var ClickableInterface */
-                $deleteButton = $editForm->get('delete');
+                $deleteButton = $editForm->get('Delete');
                 if ($deleteButton->isClicked()) {
                     $entityManager->remove($event);
                 } else {
-                    $event->setRegion($data[EventField::REGION]);
+                    $event->setEntrants($data[EventField::ENTRANTS->value]);
+                    $event->setNotables($data[EventField::NOTABLES->value]);
+                    $event->setTier($data[EventField::TIER->value]);
+                    $event->setRegion($data[EventField::REGION->value]);
                     $entityManager->persist($event);
                 }
 
                 $entityManager->flush();
 
-                return $this->redirectToRoute('app_crud_events');
+                return $this->redirectToRoute('app_events');
             }
         }
 

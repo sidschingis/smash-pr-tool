@@ -36,10 +36,33 @@ class Event
     {
         return $this->id;
     }
+    public function setEntrants(string $entrants): static
+    {
+        $this->entrants = $entrants;
+        return $this;
+    }
+
+    public function getEntrants(): int
+    {
+        return $this->entrants;
+    }
+
+    public function setNotables(string $notables): static
+    {
+        $this->notables = $notables;
+        return $this;
+    }
+
+    public function setTier(Tier $tier): static
+    {
+        $this->tier = $tier;
+        return $this;
+    }
 
     public function setRegion(string $region): static
     {
         $this->region = $region;
         return $this;
     }
+
 }
