@@ -14,6 +14,7 @@ class MainController extends AbstractController
     {
         $links = [
             new LinkData($this->generateUrl('app_crud_players'), 'Players'),
+            new LinkData($this->generateUrl('app_events'), 'Events'),
             new LinkData($this->generateUrl('app_ranking_season_crud'), 'Seasons'),
         ];
 
