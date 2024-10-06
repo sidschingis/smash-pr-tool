@@ -83,9 +83,9 @@ class CrudController extends AbstractController
                 if ($deleteButton->isClicked()) {
                     $entityManager->remove($player);
                 } else {
-                    $player->setTwitterTag($data[PlayerField::TWITTER]);
-                    $player->setTag($data[PlayerField::TAG]);
-                    $player->setRegion($data[PlayerField::REGION]);
+                    $player->setTwitterTag($data[PlayerField::TWITTER->value]);
+                    $player->setTag($data[PlayerField::TAG->value]);
+                    $player->setRegion($data[PlayerField::REGION->value]);
                     $entityManager->persist($player);
                 }
 
