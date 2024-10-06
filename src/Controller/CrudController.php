@@ -161,7 +161,7 @@ class CrudController extends AbstractController
 
         $region = $request->query->getString(PlayerFilter::REGION->value);
         if ($region) {
-            $like = $querybuilder->expr()->like('p' . PlayerField::REGION->value, ':region');
+            $like = $querybuilder->expr()->like('p.' . PlayerField::REGION->value, ':region');
             $querybuilder->andWhere($like);
             $querybuilder->setParameter('region', '%' . addcslashes($region, '%_') . '%');
         }
