@@ -28,7 +28,6 @@ final class Version20241003104225 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP INDEX search_tag');
         $this->addSql('DROP INDEX search_region');
         $this->addSql('ALTER TABLE player DROP region');
