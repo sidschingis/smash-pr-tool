@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Action\Event\ImportEvents;
+use App\Action\Placement\CalculateScores;
 use App\Action\Placement\ImportPlacements;
 use App\Action\Player\ImportMissingPlayers;
 use App\Action\Ranking\UpdateRankings;
@@ -153,6 +154,8 @@ class ActionController extends AbstractApiController
 
         $this->importPlacements($eventIds, $entityManager);
 
+        $this->calculateScores($eventIds, $entityManager);
+
         $response = $importResult ? 'Success' : 'Failure';
 
         return new Response($response);
@@ -253,4 +256,16 @@ class ActionController extends AbstractApiController
 
         } while(1);
     }
+
+
+    private function calculateScores(
+        array $eventIds,
+        EntityManagerInterface $entityManager,
+    ): void {
+        $calculator = new CalculateScores($entityManager);
+        foreach ($eventIds as $eventId) {
+            $calculator->calculate($eventId);
+        }
+    }
+
 }
