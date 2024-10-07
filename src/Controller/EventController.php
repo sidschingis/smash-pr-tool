@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EventController extends AbstractApiController
 {
+    public const string IMPORT_DATE = "afterDate";
     #[Route('/event', name: 'app_events')]
     public function eventCrud(
         Request $request,
@@ -163,7 +164,7 @@ class EventController extends AbstractApiController
     public function eventImport(
         Request $request,
     ): Response {
-        $afterDate = $request->query->getInt('afterDate');
+        $afterDate = $request->query->getInt(self::IMPORT_DATE);
 
         $query = new TournamentsForRegion(
             afterDate: $afterDate

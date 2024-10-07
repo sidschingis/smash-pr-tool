@@ -10,6 +10,7 @@ use App\Http\LinkData;
 use App\Queries\Ranking\FetchRankings;
 use App\Queries\Ranking\FetchWinsLosses;
 use App\Repository\SeasonRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormView;
@@ -85,6 +86,9 @@ class RankingController extends AbstractController
         foreach ($seasons as $entity) {
             $editForm->setData($entity);
 
+            /** @var DateTime */
+            $startDate =  $entity['startDate'];
+
             $links = [
                 new LinkData(
                     $this->generateUrl('app_ranking_season_details', [
@@ -97,6 +101,12 @@ class RankingController extends AbstractController
                         'seasonId' => $entity['id'],
                     ]),
                     'Ranking',
+                ),
+                new LinkData(
+                    $this->generateUrl('app_events_import', [
+                        EventController::IMPORT_DATE => $startDate->getTimestamp(),
+                    ]),
+                    'Import Events',
                 ),
             ];
 
