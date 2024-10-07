@@ -16,6 +16,7 @@ class ImportEvent
         public readonly string $region,
         public readonly int $startTime,
         public readonly int $nextPage,
+        public readonly int $numEntrants = 0,
         public readonly array $sets = [],
     ) {
     }
@@ -27,6 +28,7 @@ class ImportEvent
         {
             id
             name
+            numEntrants
             tournament{
                 name
                 addrState

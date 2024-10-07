@@ -91,6 +91,7 @@ class ImportEvents
                 tournamentName: $importEvent->tournamentName,
                 region: $importEvent->region,
                 date: $date,
+                entrants: $importEvent->numEntrants,
             );
         }
 

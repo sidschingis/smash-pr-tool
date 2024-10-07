@@ -37,6 +37,7 @@ class EventById extends AbstractQuery
             region: $region,
             startTime: $startTime,
             nextPage: $nextPage,
+            numEntrants: $eventNode->numEntrants,
             sets: $event === false ? [] : $event->sets,
         );
 
