@@ -40,7 +40,7 @@ class ImportPlacements
     {
         $entityManager = $this->entityManager;
 
-        $placements =[];
+        $placements = [];
         foreach ($importPlacements as $importPlacement) {
             foreach ($importPlacement->placements as $placement) {
                 $placements[] = $placement;
