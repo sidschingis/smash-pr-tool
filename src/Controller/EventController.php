@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Placement;
+use App\Entity\Set;
 use App\Forms\Event\ImportEventForm;
 use App\Queries\Tournament\TournamentsForRegion;
 use App\Enum\Event\Field as EventField;
 use App\Enum\Event\Filter as EventFilter;
+use App\Enum\Placement\Field as PlacementField;
+use App\Enum\Set\Field as SetField;
 use App\Forms\Event\AddEventForm;
 use App\Forms\Event\EditEventForm;
 use App\Forms\Event\FilterEventForm;
@@ -70,13 +74,15 @@ class EventController extends AbstractApiController
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $data = $editForm->getData();
 
-            /** @var Event */
-            $event = $entityManager->find(Event::class, $data[EventField::ID->value] ?? 0);
+            $eventId = $data[EventField::ID->value] ?? 0;
+            $event = $entityManager->find(Event::class, $eventId);
             if ($event) {
                 /** @var ClickableInterface */
                 $deleteButton = $editForm->get('Delete');
                 if ($deleteButton->isClicked()) {
                     $entityManager->remove($event);
+                    $this->deletePlacements($entityManager, $eventId);
+                    $this->deleteSets($entityManager, $eventId);
                 } else {
                     $event->setEntrants($data[EventField::ENTRANTS->value]);
                     $event->setNotables($data[EventField::NOTABLES->value]);
@@ -125,6 +131,28 @@ class EventController extends AbstractApiController
                 'existingData' => $existingEvents,
             ],
         );
+    }
+
+    private function deletePlacements(
+        EntityManagerInterface $entityManager,
+        int $eventId,
+    ): void {
+        $querybuilder = $entityManager->createQueryBuilder();
+        $querybuilder->delete(Placement::class, 'p');
+        $querybuilder->andWhere('p.' . PlacementField::EVENT_ID->value . '= :id');
+        $querybuilder->setParameter('id', $eventId);
+        $querybuilder->getQuery()->execute();
+    }
+
+    private function deleteSets(
+        EntityManagerInterface $entityManager,
+        int $eventId,
+    ): void {
+        $querybuilder = $entityManager->createQueryBuilder();
+        $querybuilder->delete(Set::class, 's');
+        $querybuilder->andWhere('s.' . SetField::EVENT_ID->value . '= :id');
+        $querybuilder->setParameter('id', $eventId);
+        $querybuilder->getQuery()->execute();
     }
 
     /**

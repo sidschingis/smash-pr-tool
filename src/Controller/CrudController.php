@@ -233,8 +233,8 @@ class CrudController extends AbstractController
                     public string $displayScore,
                     public string $eventId,
                     DateTimeInterface $date,
-                    public string $eventName,
-                    public string $tournamentName,
+                    public string $eventName = '',
+                    public string $tournamentName = '',
                 ) {
                     $this->dateString = $date->format('Y-m-d');
                 }
