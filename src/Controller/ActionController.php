@@ -142,15 +142,26 @@ class ActionController extends AbstractApiController
         $importEvents = [];
         foreach ($eventIds as $eventId) {
             $eventData = $this->getEventData($eventId);
+            /** @var ImportEvent[] */
             $importEvents = array_merge($importEvents, $eventData);
         }
 
         $importer = new ImportEvents(
             eventManager: $entityManager,
-            setImporter: new ImportSets($entityManager),
         );
 
         $importResult = $importer->importEvents($importEvents);
+
+        /**
+         * Import Sets
+         */
+        $setImporter = new ImportSets($entityManager);
+        $importSets = [];
+        foreach ($importEvents as $importEvent) {
+            $importSets = array_merge($importSets, $importEvent->sets);
+        }
+        $setImporter->importSets($importSets);
+
 
         $this->importPlacements($eventIds, $entityManager);
 

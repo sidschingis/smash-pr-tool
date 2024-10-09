@@ -2,7 +2,6 @@
 
 namespace App\Action\Event;
 
-use App\Action\Sets\ImportSets;
 use App\Entity\Event;
 use App\Objects\ImportEvent;
 use DateTimeImmutable;
@@ -12,7 +11,6 @@ class ImportEvents
 {
     public function __construct(
         private EntityManagerInterface $eventManager,
-        private ImportSets $setImporter,
     ) {
     }
 
@@ -21,8 +19,6 @@ class ImportEvents
      */
     public function importEvents(array $importEvents): bool
     {
-        $setImporter = $this->setImporter;
-
         $eventManager = $this->eventManager;
 
         /**
@@ -33,15 +29,6 @@ class ImportEvents
             $eventManager->persist($event);
         }
         $eventManager->flush();
-
-        /**
-         * Import Sets
-         */
-        $importSets = [];
-        foreach ($importEvents as $importEvent) {
-            $importSets = array_merge($importSets, $importEvent->sets);
-        }
-        $setImporter->importSets($importSets);
 
         return true;
     }

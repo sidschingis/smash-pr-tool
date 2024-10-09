@@ -11,24 +11,30 @@
     <section id="Wins">
         <h2>Wins</h2>
         <div class="result-container">
-            {% for opponent in wins %}
-            <div class="opponent-container">
-                <span class="count">x{{opponent.count}}</span>
-                <span class="tag">{{opponent.name}}</span>
-            </div>
-            {% endfor %}
+            {% for result in wins %}
+            <h2>{{result.tier}}</h3>
+                {% for opponent in result.headToHeads %}
+                <div class="opponent-container">
+                    <span class="count">x{{opponent.count}}</span>
+                    <span class="tag">{{opponent.name}}</span>
+                </div>
+                {% endfor %}
+                {% endfor %}
         </div>
     </section>
 
     <section id="Losses">
         <h2>Losses</h2>
         <div class="result-container">
-            {% for opponent in losses %}
-            <div class="opponent-container">
-                <span class="count">x{{opponent.count}}</span>
-                <span class="tag">{{opponent.name}}</span>
-            </div>
-            {% endfor %}
+            {% for result in losses %}
+            <h2>{{result.tier}}</h3>
+                {% for opponent in result.headToHeads %}
+                <div class="opponent-container">
+                    <span class="count">x{{opponent.count}}</span>
+                    <span class="tag">{{opponent.name}}</span>
+                </div>
+                {% endfor %}
+                {% endfor %}
         </div>
     </section>
 </div>
