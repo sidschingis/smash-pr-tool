@@ -132,6 +132,7 @@ class SetsForPlayer extends AbstractQuery
                   updatedAfter: $startTimeStamp,
                 }) {
                   nodes $set
+                }
             }
         }
         END;
