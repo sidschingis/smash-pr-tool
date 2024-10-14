@@ -8,14 +8,14 @@ with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) 
 ## Getting Started
 
 1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --no-cache` to build fresh images
-3. Run `docker compose up --pull always -d --wait` to start the project
+2. Run `docker compose --env-file .env.local --file compose.yaml -f compose.override.yaml build --no-cache` to build fresh images
+3. Run `docker compose --env-file .env.local --file compose.yaml -f compose.override.yaml up --pull always -d --wait` to start the project
 4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
 5. Run `docker compose down --remove-orphans` to stop the Docker containers.
 
 ### First time setup
 
-* create a new text file named `startGGToken.txt` in `.secrets` containing your start.gg API token
+* create a new text file named `startGGToken.txt` in `.secrets` (folder might need to be created first) containing your start.gg API token
 * connect to the php docker container and initialize the database `php bin/console doctrine:migrations:migrate`
 * create a `.env` file. See `.env.template`
 
