@@ -146,6 +146,7 @@ class FetchWinsLosses
             WHERE $playerColumn=$playerId
             AND s.$setDate BETWEEN season.$startDate and season.$endDate
             GROUP BY s.$opponentColumn, op.$tag, e.$tier
+            ORDER BY e.$tier DESC
             ;
         EOD;
     }
