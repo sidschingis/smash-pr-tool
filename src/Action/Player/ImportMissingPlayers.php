@@ -2,7 +2,6 @@
 
 namespace App\Action\Player;
 
-use App\ControllerData\SetData;
 use App\Entity\Player;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -13,11 +12,14 @@ class ImportMissingPlayers
     ) {
     }
 
-    public function importPlayers(SetData $setData): array
+    /**
+     * @param ImportSet[] $importSets
+     */
+    public function importPlayers(array $importSets): array
     {
         $entityManager = $this->entityManager;
 
-        $playerData = $this->parsePlayers($setData);
+        $playerData = $this->parsePlayers($importSets);
 
         $newPlayers = $this->filterPlayers($playerData);
 
@@ -38,18 +40,17 @@ class ImportMissingPlayers
 
 
     /**
+     * @param ImportSet[] $importSets
      * @return string[] <int,string>
      */
-    private function parsePlayers(SetData $setData): array
+    private function parsePlayers(array $importSets): array
     {
         $playerData = [];
-        foreach ($setData->eventInfos as $eventData) {
-            foreach($eventData->sets as $importSet) {
-                $playerData += [
-                    $importSet->set->getWinnerId() => $importSet->winnerTag,
-                    $importSet->set->getLoserId() => $importSet->loserTag,
-                ];
-            }
+        foreach($importSets as $importSet) {
+            $playerData += [
+                $importSet->set->getWinnerId() => $importSet->winnerTag,
+                $importSet->set->getLoserId() => $importSet->loserTag,
+            ];
         }
 
         return $playerData;

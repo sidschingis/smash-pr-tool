@@ -67,7 +67,7 @@ class ActionController extends AbstractApiController
         );
 
         $importPlayers = new ImportMissingPlayers($entityManager);
-        $playerResult = $importPlayers->importPlayers($sets);
+        $playerResult = $importPlayers->importPlayers($importSets);
 
         $playerData = implode(
             PHP_EOL,
@@ -162,10 +162,12 @@ class ActionController extends AbstractApiController
         }
         $setImporter->importSets($importSets);
 
-
         $this->importPlacements($eventIds, $entityManager);
 
         $this->calculateScores($eventIds, $entityManager);
+
+        $playerImporter = new ImportMissingPlayers($entityManager);
+        $playerImporter->importPlayers($importSets);
 
         $response = $importResult ? 'Success' : 'Failure';
 
