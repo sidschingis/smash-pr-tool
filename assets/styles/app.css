@@ -147,6 +147,37 @@ body {
     }
 }
 
+#Placements {
+    .placement-table {
+        :hover {
+            background-color: var(--color-highlight);
+        }
+
+        .placement-row,
+        .placement-header {
+            display: flex;
+            flex-wrap: wrap;
+
+            .tag {
+                flex: 2;
+            }
+
+            .event {
+                flex: 3;
+            }
+
+            .result {
+                flex: 2;
+            }
+
+            .score {
+                flex: 1;
+            }
+        }
+    }
+}
+
+
 #PlayerCrud {
     form.edit-form:hover {
         background-color: var(--color-highlight);

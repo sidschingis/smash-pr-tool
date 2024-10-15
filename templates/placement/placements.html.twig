@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% set titleString = 'Placements' %}
+
+{% block title %}{{titleString}}{% endblock %}
+
+{% block body %}
+<section id="Placements">
+    <h2>{{titleString}}</h2>
+
+    <h3>Filter Events </h3>
+    {{form(filterForm)}}
+
+    <div class="placement-table">
+        <div class="placement-header">
+            <div class="tag">Player</div>
+            <div class="event">Event</div>
+            <div class="result">Result</div>
+            <div class="score">Score</div>
+        </div>
+
+        {% for result in placementData %}
+        <div class="placement-row">
+            <div class="tag">{{result.tag}}</div>
+            <div class="event">{{result.tournamentName}} - {{result.eventName}}</div>
+            <div class="result">{{result.placement}} / {{result.entrants}}</div>
+            <div class="score">{{result.score}}</div>
+        </div>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}
