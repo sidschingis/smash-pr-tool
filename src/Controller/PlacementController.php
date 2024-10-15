@@ -13,7 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PlacementController extends AbstractController
 {
-    #[Route('/placement', name: 'app_placement')]
+    public const PLACEMENTS = 'app_placement';
+
+    #[Route('/placement', name: self::PLACEMENTS)]
     public function placements(
         Request $request,
         EntityManagerInterface $entityManager

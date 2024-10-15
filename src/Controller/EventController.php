@@ -11,10 +11,12 @@ use App\Queries\Tournament\TournamentsForRegion;
 use App\Enum\Event\Field as EventField;
 use App\Enum\Event\Filter as EventFilter;
 use App\Enum\Placement\Field as PlacementField;
+use App\Enum\Placement\Filter;
 use App\Enum\Set\Field as SetField;
 use App\Forms\Event\AddEventForm;
 use App\Forms\Event\EditEventForm;
 use App\Forms\Event\FilterEventForm;
+use App\Http\LinkData;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -108,6 +110,12 @@ class EventController extends AbstractApiController
             $editForm->setData($event);
 
             $links = [
+                new LinkData($this->generateUrl(
+                    route: PlacementController::PLACEMENTS,
+                    parameters: [
+                        Filter::EVENT->value => $event[EventField::ID->value]
+                    ],
+                ), 'Placements'),
             ];
 
             $eventData = new class (
