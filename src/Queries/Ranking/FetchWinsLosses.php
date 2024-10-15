@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Enum\Season\Field as SeasonField;
 use App\Objects\Ranking\HeadToHead;
 use App\Objects\Ranking\ResultContainer;
+use App\Util\QueryFormatter;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
 
@@ -46,8 +47,8 @@ class FetchWinsLosses
         int $playerId,
     ): array {
         $sql = $this->getSetQuery(
-            playerColumn: $this->formatField(SetField::WINNER_ID->value),
-            opponentColumn:$this->formatField(SetField::LOSER_ID->value),
+            playerColumn: SetField::WINNER_ID->value,
+            opponentColumn:SetField::LOSER_ID->value,
             seasonId: $seasonId,
             playerId: $playerId,
         );
@@ -64,8 +65,8 @@ class FetchWinsLosses
         int $playerId,
     ): array {
         $sql = $this->getSetQuery(
-            playerColumn: $this->formatField(SetField::LOSER_ID->value),
-            opponentColumn: $this->formatField(SetField::WINNER_ID->value),
+            playerColumn: SetField::LOSER_ID->value,
+            opponentColumn: SetField::WINNER_ID->value,
             seasonId: $seasonId,
             playerId: $playerId,
         );
@@ -125,12 +126,15 @@ class FetchWinsLosses
         int $seasonId,
         int $playerId,
     ): string {
+        $formatter = new QueryFormatter();
         $pId = PlayerField::ID->value;
         $tag = PlayerField::TAG->value;
         $setDate = SetField::DATE->value;
-        $sEventId = $this->formatField(SetField::EVENT_ID->value);
-        $startDate = $this->formatField(SeasonField::START_DATE->value);
-        $endDate = $this->formatField(SeasonField::END_DATE->value);
+        $selfId = $formatter->formatField($playerColumn);
+        $otherId = $formatter->formatField($opponentColumn);
+        $sEventId = $formatter->formatField(SetField::EVENT_ID->value);
+        $startDate = $formatter->formatField(SeasonField::START_DATE->value);
+        $endDate = $formatter->formatField(SeasonField::END_DATE->value);
         $tier = EventField::TIER->value;
         $eEventId = EventField::ID->value;
         return <<<EOD
@@ -141,18 +145,13 @@ class FetchWinsLosses
                 , e.$tier tier
             FROM set s
             JOIN season ON (season.id = $seasonId)
-            LEFT JOIN player op ON (op.$pId = s.$opponentColumn)
+            LEFT JOIN player op ON (op.$pId = s.$otherId)
             JOIN event e ON (e.$eEventId = s.$sEventId)
-            WHERE $playerColumn=$playerId
+            WHERE $selfId=$playerId
             AND s.$setDate BETWEEN season.$startDate and season.$endDate
-            GROUP BY s.$opponentColumn, op.$tag, e.$tier
+            GROUP BY s.$otherId, op.$tag, e.$tier
             ORDER BY e.$tier DESC
             ;
         EOD;
-    }
-
-    private function formatField(string $input): string
-    {
-        return preg_replace('/[A-Z]/', '_$0', $input);
     }
 }
