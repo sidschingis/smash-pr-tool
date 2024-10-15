@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Enum\DateFormat;
 use App\Forms\TournamentForm;
 use App\Queries\Player\SetsForPlayer;
 use App\Queries\Player\TournamentsForPlayer;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -74,7 +76,11 @@ class ImportController extends AbstractApiController
         $choices = [];
         foreach ($tournaments as $tournament) {
             $id = $tournament->id;
-            $label = "$tournament->name";
+            $name = $tournament->name;
+            $date = (new DateTime())
+                ->setTimestamp($tournament->startTime)
+                ->format(DateFormat::DATE->value);
+            $label = "{$date} {$name}";
 
             $choices[$label] = $id;
         }

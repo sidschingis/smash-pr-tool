@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Player;
 use App\Entity\Set;
+use App\Enum\DateFormat;
 use App\Enum\Player\Field as PlayerField;
 use App\Enum\Player\Filter as PlayerFilter;
 use App\Enum\Event\Field as EventField;
@@ -236,7 +237,7 @@ class CrudController extends AbstractController
                     public string $eventName = '',
                     public string $tournamentName = '',
                 ) {
-                    $this->dateString = $date->format('Y-m-d');
+                    $this->dateString = $date->format(DateFormat::DATE->value);
                 }
             };
         }

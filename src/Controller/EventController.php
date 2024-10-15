@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Placement;
 use App\Entity\Set;
+use App\Enum\DateFormat;
 use App\Forms\Event\ImportEventForm;
 use App\Queries\Tournament\TournamentsForRegion;
 use App\Enum\Event\Field as EventField;
@@ -208,7 +209,7 @@ class EventController extends AbstractApiController
         foreach ($tournaments as $tournament) {
             $tournamentName = $tournament->name;
             $startAt = (new DateTimeImmutable())->setTimestamp($tournament->startTime);
-            $date = $startAt->format('Y-m-d');
+            $date = $startAt->format(DateFormat::DATE->value);
 
             foreach ($tournament->events as $event) {
                 $label = <<<EOD
