@@ -2,6 +2,7 @@
 
 namespace App\Queries\Tournament;
 
+use App\Config\Defaults;
 use App\ControllerData\EventData;
 use App\Enum\GameId;
 use App\GraphQL\Query\AbstractQuery;
@@ -57,8 +58,8 @@ class TournamentsForRegion extends AbstractQuery
     public function __construct(
         protected int $perPage = 50,
         protected int $page = 0,
-        protected string $countryCode = 'DE',
-        protected string $addrState = 'BE',
+        protected string $countryCode = Defaults::COUNTRY,
+        protected string $addrState = Defaults::REGION,
         protected int $afterDate = 0,
     ) {
     }
