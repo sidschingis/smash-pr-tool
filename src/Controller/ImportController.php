@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Enum\DateFormat;
+use App\Config\DateFormat;
 use App\Forms\TournamentForm;
 use App\Queries\Player\SetsForPlayer;
 use App\Queries\Player\TournamentsForPlayer;

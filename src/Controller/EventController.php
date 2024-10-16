@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Placement;
 use App\Entity\Set;
-use App\Enum\DateFormat;
+use App\Config\DateFormat;
 use App\Forms\Event\ImportEventForm;
 use App\Queries\Tournament\TournamentsForRegion;
 use App\Enum\Event\Field as EventField;
