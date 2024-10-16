@@ -270,3 +270,22 @@ body {
         background-color: var(--color-highlight);
     }
 }
+
+#SeasonContenders {
+    .rank-container {
+        .rank-row {
+            display: flex;
+            gap: 30px;
+
+            .tag,
+            .avg-score {
+                flex: 1;
+            }
+        }
+
+        :hover {
+            background-color: var(--color-highlight);
+        }
+    }
+
+}

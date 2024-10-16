@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% set titleString = 'Contenters ' ~ seasonName %}
+
+{% block title %}{{titleString}}{% endblock %}
+
+{% block body %}
+<h2>{{titleString}}</h2>
+
+<div id="SeasonContenders">
+    <section>
+        <h3>Ranking</h3>
+        <div class="rank-container">
+            <div class="rank-row">
+                <span class="tag">Player</span>
+                <span class="avg-score">Average Placing Score</span>
+            </div>
+            {% for data in contenders %}
+            <div class="rank-row">
+                <span class="tag">{{data.tag}}</span>
+                <span class="avg-score">{{data.avg}}</span>
+            </div>
+            {% endfor %}
+        </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

@@ -7,6 +7,7 @@ use App\Entity\Season;
 use App\Forms\Ranking\AddSeasonForm;
 use App\Forms\Ranking\EditSeasonForm;
 use App\Http\LinkData;
+use App\Queries\Ranking\FetchContenders;
 use App\Queries\Ranking\FetchRankings;
 use App\Queries\Ranking\FetchWinsLosses;
 use App\Repository\SeasonRepository;
@@ -20,6 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RankingController extends AbstractController
 {
+    private const CONTENDERS = 'app_ranking_season_contenders';
+
     #[Route(
         '/ranking/season',
         name: 'app_ranking_season_crud',
@@ -101,6 +104,12 @@ class RankingController extends AbstractController
                         'seasonId' => $entity['id'],
                     ]),
                     'Ranking',
+                ),
+                new LinkData(
+                    $this->generateUrl(self::CONTENDERS, [
+                        'seasonId' => $entity['id'],
+                    ]),
+                    'Contenders',
                 ),
                 new LinkData(
                     $this->generateUrl('app_events_import', [
@@ -247,4 +256,43 @@ class RankingController extends AbstractController
             ],
         );
     }
+
+    #[Route(
+        '/ranking/season/{seasonId}/contenders',
+        name: self::CONTENDERS,
+        requirements: ['seasonId' => '\d+']
+    )]
+    public function contenders(
+        EntityManagerInterface $entityManager,
+        int $seasonId,
+    ): Response {
+        /** @var ?Season */
+        $season = $entityManager->find(Season::class, $seasonId);
+        if (!$season) {
+            return $this->redirectToRoute('app_ranking_season_crud');
+        }
+
+        $query = new FetchContenders();
+        $rawContenders = $query->getData(
+            entityManager: $entityManager,
+            seasonFilter: $seasonId,
+        );
+
+        $contenders =  array_map(
+            function (array $row): object {
+                $row['avg'] = round($row['avg'], 2);
+                return (object) $row;
+            },
+            $rawContenders
+        );
+
+        return $this->render(
+            'ranking/season_contenders.html.twig',
+            [
+                'seasonName' => $season->getName(),
+                'contenders' => $contenders,
+            ],
+        );
+    }
+
 }
