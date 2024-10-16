@@ -279,6 +279,11 @@ body {
 
             .tag,
             .avg-score {
+                flex: 2;
+            }
+
+            .regional,
+            .total {
                 flex: 1;
             }
         }

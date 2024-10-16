@@ -14,11 +14,15 @@
             <div class="rank-row">
                 <span class="tag">Player</span>
                 <span class="avg-score">Average Placing Score</span>
+                <span class="regional">Regional Count</span>
+                <span class="total">Total Count</span>
             </div>
             {% for data in contenders %}
             <div class="rank-row">
                 <span class="tag">{{data.tag}}</span>
                 <span class="avg-score">{{data.avg}}</span>
+                <span class="regional">{{data.regionalCount}}</span>
+                <span class="total">{{data.eventCount}}</span>
             </div>
             {% endfor %}
         </div>
