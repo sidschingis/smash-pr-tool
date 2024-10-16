@@ -24,7 +24,7 @@ class Tournament
                 name
         }
         EOD
-        :'';
+        : '';
         return <<<EOD
         {
             id

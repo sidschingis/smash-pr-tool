@@ -2,14 +2,14 @@
 
 namespace App\Queries\Ranking;
 
-use App\Enum\Player\Field as PlayerField;
-use App\Enum\Set\Field as SetField;
 use App\Enum\Event\Field as EventField;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Enum\Player\Field as PlayerField;
 use App\Enum\Season\Field as SeasonField;
+use App\Enum\Set\Field as SetField;
 use App\Objects\Ranking\HeadToHead;
 use App\Objects\Ranking\ResultContainer;
 use App\Util\QueryFormatter;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
 

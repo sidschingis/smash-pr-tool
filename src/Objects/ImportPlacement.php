@@ -6,7 +6,6 @@ use App\Entity\Placement;
 
 class ImportPlacement
 {
-
     /**
      * @param Placement[]  $placements
      */

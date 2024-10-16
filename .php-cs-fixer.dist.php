@@ -12,6 +12,7 @@ return (new PhpCsFixer\Config())
             'import_classes' => true,
         ],
         'no_unused_imports' => true,
+        'ordered_imports' => true,
     ])
     ->setFinder($finder)
 ;

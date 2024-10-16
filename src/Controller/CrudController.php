@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
+use App\Config\DateFormat;
 use App\Entity\Event;
 use App\Entity\Player;
 use App\Entity\Set;
-use App\Config\DateFormat;
-use App\Enum\Player\Field as PlayerField;
-use App\Enum\Player\Filter as PlayerFilter;
 use App\Enum\Event\Field as EventField;
 use App\Enum\Placement\Filter;
+use App\Enum\Player\Field as PlayerField;
+use App\Enum\Player\Filter as PlayerFilter;
 use App\Forms\Player\AddPlayerForm;
 use App\Forms\Player\EditPlayerForm;
 use App\Forms\Player\FilterPlayerForm;

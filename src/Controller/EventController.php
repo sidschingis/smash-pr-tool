@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
+use App\Config\DateFormat;
 use App\Entity\Event;
 use App\Entity\Placement;
 use App\Entity\Set;
-use App\Config\DateFormat;
-use App\Forms\Event\ImportEventForm;
-use App\Queries\Tournament\TournamentsForRegion;
 use App\Enum\Event\Field as EventField;
 use App\Enum\Event\Filter as EventFilter;
 use App\Enum\Placement\Field as PlacementField;
@@ -16,7 +14,9 @@ use App\Enum\Set\Field as SetField;
 use App\Forms\Event\AddEventForm;
 use App\Forms\Event\EditEventForm;
 use App\Forms\Event\FilterEventForm;
+use App\Forms\Event\ImportEventForm;
 use App\Http\LinkData;
+use App\Queries\Tournament\TournamentsForRegion;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
