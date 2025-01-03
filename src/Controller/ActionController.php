@@ -135,7 +135,17 @@ class ActionController extends AbstractApiController
     ): Response {
         $eventIds = $request->request->all()['eventIds'] ?? [];
 
-        if (!$eventIds) {
+        if (!is_array($eventIds)) {
+            return new Response('Invalid event ids');
+        }
+
+        $singleId = $request->request->getInt('singleEventId');
+
+        if ($singleId) {
+            $eventIds[] = $singleId;
+        }
+
+        if ($eventIds === []) {
             return new Response('No events selected');
         }
 

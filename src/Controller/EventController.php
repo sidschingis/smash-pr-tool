@@ -15,6 +15,7 @@ use App\Forms\Event\AddEventForm;
 use App\Forms\Event\EditEventForm;
 use App\Forms\Event\FilterEventForm;
 use App\Forms\Event\ImportEventForm;
+use App\Forms\Event\ImportSingleEventForm;
 use App\Http\LinkData;
 use App\Queries\Tournament\TournamentsForRegion;
 use DateTimeImmutable;
@@ -238,10 +239,20 @@ class EventController extends AbstractApiController
             ],
         );
 
+        $form2 = $this->createForm(
+            ImportSingleEventForm::class,
+            options: [
+                'data' => [
+                    'action' => $route,
+                ],
+            ],
+        );
+
         return $this->render(
             'import/event/eventSelect.html.twig',
             [
                 'form' => $form,
+                'form2' => $form2,
             ],
         );
     }
