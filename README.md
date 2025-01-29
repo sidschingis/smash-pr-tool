@@ -17,7 +17,7 @@ with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) 
 
 * create a new text file named `startGGToken.txt` in `.secrets` (folder might need to be created first) containing your start.gg API token
 * connect to the php docker container and initialize the database `php bin/console doctrine:migrations:migrate`
-* create a `.env` file. See `.env.template`
+* create a `.env.local` file. See `.env.template`
 
 ## Features
 
