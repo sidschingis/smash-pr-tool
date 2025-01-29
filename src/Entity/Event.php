@@ -27,7 +27,7 @@ class Event
         private int $notables = 0,
         #[ORM\Column(type: 'string', enumType: Tier::class)]
         private Tier $tier = Tier::NONE,
-        #[ORM\Column(length: 10, options:['default' => ''])]
+        #[ORM\Column(length: 50, options:['default' => ''])]
         private string $region = '',
     ) {
     }

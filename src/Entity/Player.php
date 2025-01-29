@@ -16,7 +16,7 @@ class Player
         #[ORM\Id]
         #[ORM\Column]
         private ?int $id = 0,
-        #[ORM\Column(length: 20)]
+        #[ORM\Column(length: 50)]
         private ?string $tag = '',
         #[ORM\Column(length: 50)]
         private ?string $twitterTag = '',
