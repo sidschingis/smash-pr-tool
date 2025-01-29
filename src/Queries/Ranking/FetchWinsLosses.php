@@ -140,7 +140,7 @@ class FetchWinsLosses
         return <<<EOD
             SELECT
                 COUNT(1)
-                ,s.$opponentColumn opponent_id
+                ,s.$otherId opponent_id
                 ,COALESCE(op.$tag,'') opponent_tag
                 , e.$tier tier
             FROM set s
