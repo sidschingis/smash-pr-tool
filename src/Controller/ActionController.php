@@ -149,6 +149,8 @@ class ActionController extends AbstractApiController
             return new Response('No events selected');
         }
 
+        set_time_limit(30 * count($eventIds));
+
         $importEvents = [];
         foreach ($eventIds as $eventId) {
             $eventData = $this->getEventData($eventId);
