@@ -49,6 +49,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
     volumes:
       - database_data:/var/lib/postgresql/data:rw
+    ports:
+      # HTTP
+      - target: 5432
+        published: ${HTTP_PORT:-55432}
+        protocol: tcp
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
