@@ -13,6 +13,7 @@
         <div class="rank-container">
             <div class="rank-row">
                 <span class="tag">Player</span>
+                <span class="tag">Id</span>
                 <span class="avg-score">Average Placing Score</span>
                 <span class="regional">Regional Count</span>
                 <span class="total">Total Count</span>
@@ -20,6 +21,7 @@
             {% for data in contenders %}
             <div class="rank-row">
                 <span class="tag">{{data.tag}}</span>
+                <span class="id">{{data.id}}</span>
                 <span class="avg-score">{{data.avg}}</span>
                 <span class="regional">{{data.regionalCount}}</span>
                 <span class="total">{{data.eventCount}}</span>

@@ -72,7 +72,9 @@ class FetchContenders
         $qb->groupBy("pl.{$pId}");
         $qb->orderBy('avg', 'DESC');
 
-        $this->addMinEventCondition($qb);
+        $this->addMinEventCondition(
+            $qb,
+        );
 
         $query = $qb
             ->getQuery();
@@ -90,15 +92,17 @@ class FetchContenders
         $minEvents = $this->minEvents;
 
         $region = EventField::REGION->value;
-        $start = SeasonField::START_DATE->value;
-        $end = SeasonField::END_DATE->value;
-        $eDate = EventField::DATE->value;
         $eEventId = EventField::ID->value;
 
         $qb->addSelect(
             "SUM(CASE WHEN e.{$region} = :region THEN 1 ELSE 0 END) as regionalCount",
             "COUNT(e.{$eEventId}) as eventCount",
         );
+
+        // $qb->andHaving(
+        //     "regionalCount >= $minRegional",
+        //     "eventCount >= $minEvents",
+        // );
     }
 
 

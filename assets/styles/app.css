@@ -278,6 +278,7 @@ body {
             gap: 30px;
 
             .tag,
+            .id,
             .avg-score {
                 flex: 2;
             }
