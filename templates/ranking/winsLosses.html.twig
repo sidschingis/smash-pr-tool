@@ -8,36 +8,9 @@
 <h2>{{titleString}}</h2>
 
 <div id="WinsLosses">
-    <section id="Wins">
-        <h2>Wins</h2>
-        <div class="result-container">
-            {% for result in wins %}
-            <h2>[{{result.tier}}]</h3>
-                {% for opponent in result.headToHeads %}
-                <div class="opponent-container">
-                    <span class="count">x{{opponent.count}}</span>
-                    <span class="tag">{{opponent.name}}</span>
-                    <span class="separator">,</span>
-                </div>
-                {% endfor %}
-                {% endfor %}
-        </div>
-    </section>
-
-    <section id="Losses">
-        <h2>Losses</h2>
-        <div class="result-container">
-            {% for result in losses %}
-            <h2>[{{result.tier}}]</h3>
-                {% for opponent in result.headToHeads %}
-                <div class="opponent-container">
-                    <span class="count">x{{opponent.count}}</span>
-                    <span class="tag">{{opponent.name}}</span>
-                    <span class="separator">,</span>
-                </div>
-                {% endfor %}
-                {% endfor %}
-        </div>
-    </section>
+    {{ include("ranking/winsLosses_container.html.twig",
+    {'title': 'Wins', 'results': wins}) }}
+    {{ include("ranking/winsLosses_container.html.twig",
+    {'title': 'Losses', 'results': losses}) }}
 </div>
 {% endblock %}
