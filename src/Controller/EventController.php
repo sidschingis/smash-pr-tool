@@ -188,6 +188,7 @@ class EventController extends AbstractApiController
         }
 
         $query = $querybuilder
+            ->orderBy('p.'.EventField::DATE->value, 'DESC')
             ->setMaxResults(20)
             ->getQuery();
 
