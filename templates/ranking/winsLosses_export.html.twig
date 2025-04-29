@@ -2,7 +2,7 @@
     <h2>{{title}} Export</h2>
     <div class="result-container">
         {% for result in results %}
-        <span>[{{result.tier}}]
+        <span class="{{result.tier}} tier-container">[{{result.tier}}]
             {% for opponent in result.headToHeads %}
             x{{opponent.count}} {{opponent.name}},
             {% endfor %}

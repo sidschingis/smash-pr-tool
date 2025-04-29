@@ -5,6 +5,10 @@
     --color-disabled: gray;
     --color-link: blue;
     --color-link-visited: lightskyblue;
+    --color-tier-s: red;
+    --color-tier-a: orange;
+    --color-tier-b: purple;
+    --color-tier-c: green;
 }
 
 body {
@@ -246,6 +250,22 @@ body {
     .result-container {
         display: flex;
         flex-direction: column;
+    }
+
+    .tier-container.S {
+        color: var(--color-tier-s)
+    }
+
+    .tier-container.A {
+        color: var(--color-tier-a)
+    }
+
+    .tier-container.B {
+        color: var(--color-tier-b)
+    }
+
+    .tier-container.C {
+        color: var(--color-tier-c)
     }
 }
 
