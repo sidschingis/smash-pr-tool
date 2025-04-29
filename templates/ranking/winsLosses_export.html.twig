@@ -1,0 +1,12 @@
+<section id="{{title}}">
+    <h2>{{title}} Export</h2>
+    <div class="result-container">
+        {% for result in results %}
+        <span>[{{result.tier}}]
+            {% for opponent in result.headToHeads %}
+            x{{opponent.count}} {{opponent.name}},
+            {% endfor %}
+        </span>
+        {% endfor %}
+    </div>
+</section>

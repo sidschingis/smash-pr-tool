@@ -12,5 +12,10 @@
     {'title': 'Wins', 'results': wins}) }}
     {{ include("ranking/winsLosses_container.html.twig",
     {'title': 'Losses', 'results': losses}) }}
+
+    {{ include("ranking/winsLosses_export.html.twig",
+    {'title': 'Wins', 'results': wins}) }}
+    {{ include("ranking/winsLosses_export.html.twig",
+    {'title': 'Losses', 'results': losses}) }}
 </div>
 {% endblock %}
