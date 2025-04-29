@@ -12,11 +12,12 @@
         <h2>Wins</h2>
         <div class="result-container">
             {% for result in wins %}
-            <h2>{{result.tier}}</h3>
+            <h2>[{{result.tier}}]</h3>
                 {% for opponent in result.headToHeads %}
                 <div class="opponent-container">
                     <span class="count">x{{opponent.count}}</span>
                     <span class="tag">{{opponent.name}}</span>
+                    <span class="separator">,</span>
                 </div>
                 {% endfor %}
                 {% endfor %}
@@ -27,11 +28,12 @@
         <h2>Losses</h2>
         <div class="result-container">
             {% for result in losses %}
-            <h2>{{result.tier}}</h3>
+            <h2>[{{result.tier}}]</h3>
                 {% for opponent in result.headToHeads %}
                 <div class="opponent-container">
                     <span class="count">x{{opponent.count}}</span>
                     <span class="tag">{{opponent.name}}</span>
+                    <span class="separator">,</span>
                 </div>
                 {% endfor %}
                 {% endfor %}
