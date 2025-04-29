@@ -9,11 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class CalculateScores
 {
-    private const float PLACEMENT_BIAS = 3.0;
-    private const float PLACEMENT_BASE = 2.0;
-    private const float TOURNAMENT_BIAS = 0.5;
-    private const float TOURNAMENT_BASE = 2.0;
-
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
@@ -25,18 +20,15 @@ class CalculateScores
         $event = $this->fetchEvent($eventId);
         $entrants = $event->getEntrants();
 
-        $tournamentScore = $this->getTournamentScore($entrants);
-
         $placements = $this->fetchPlacements($eventId);
 
         foreach($placements as $placementEntity) {
             $placement = $placementEntity->getPlacement();
-            $placementScore = $this->getPlacementScore($placement);
 
             $score = $this->calculateScore(
-                $placementScore,
-                $tournamentScore,
-            );
+                placement:$placement,
+                tournamentSize: $entrants,
+            ) * 10;
 
             $placementEntity->setScore((int) $score);
             $entityManager->persist($placementEntity);
@@ -66,20 +58,29 @@ class CalculateScores
         ]);
     }
 
-    private function calculateScore(float $placementScore, float $tournamentScore): float
+    private function calculateScore(int $placement, int $tournamentSize): float
     {
-        return $placementScore * $tournamentScore * 10;
+        $rounds = $this->getRounds($tournamentSize);
+        $sizeBonus = $this->getSizeBonus($tournamentSize);
+        $possiblePlacings  = [
+            1,2,3,4,5,
+            7,9,13,17,25,
+            33,49,65,97,129,
+            193,257,385,
+        ];
+
+        $roundsLeft = array_flip($possiblePlacings)[$placement] ?? 99;
+
+        return $rounds - $roundsLeft + $sizeBonus - 1;
     }
 
-    private function getPlacementScore(int $placement): float
+    private function getRounds(int $tournamentSize): int
     {
-        $log = log($placement, static::PLACEMENT_BASE);
-        return 1 / ($log + static::PLACEMENT_BIAS) ;
+        return ceil(2 * (log(num:$tournamentSize, base: 2) - 1)) + 2;
     }
 
-    private function getTournamentScore(int $tournamentSize): float
+    private function getSizeBonus(int $tournamentSize): float
     {
-        $log = log($tournamentSize, static::TOURNAMENT_BASE);
-        return $log + pow(1 + static::TOURNAMENT_BIAS, $log);
+        return (log(num:$tournamentSize, base: 2) - 3) / 10;
     }
 }
