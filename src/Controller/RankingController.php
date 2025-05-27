@@ -194,7 +194,7 @@ class RankingController extends AbstractController
         }
 
         $query = new FetchWinsLosses();
-        [$wins, $losses] = $query->getData(
+        [$wins, $losses, $placings] = $query->getData(
             entityManager: $entityManager,
             seasonId: $seasonId,
             playerId: $playerId,
@@ -207,6 +207,7 @@ class RankingController extends AbstractController
                 'playerTag' => $playerTag,
                 'wins' => $wins,
                 'losses' => $losses,
+                'placings' => $placings
             ],
         );
     }
