@@ -68,6 +68,7 @@ class FetchContenders
             ->setParameter('season', $seasonFilter);
         $qb->andWhere("pl.{$region}=:region")
             ->setParameter('region', $regionFilter);
+        $qb->andWhere("p.{$score}>0");
 
         $qb->groupBy("pl.{$pId}");
         $qb->orderBy('avg', 'DESC');
