@@ -13,6 +13,7 @@ use App\ControllerData\EventData;
 use App\Entity\Placement;
 use App\Objects\ImportEvent;
 use App\Queries\Event\EventById;
+use App\Queries\Event\FetchEventsBySeason;
 use App\Queries\Placement\PlacementsForEvent;
 use App\Queries\Player\SetsForPlayer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -280,6 +281,36 @@ class ActionController extends AbstractApiController
             $page = $nextPage;
 
         } while(1);
+    }
+
+
+    #[Route('/action/updatePlacements', name: 'app_action_updatePlacings')]
+    public function updatePlacements(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $paramSeasonId = 'seasonId';
+        $seasonId = $request->request->getInt($paramSeasonId);
+        if ($seasonId === 0) {
+            $seasonId = $request->query->getInt($paramSeasonId);
+        }
+
+        $eventIds = (new FetchEventsBySeason())->getData(
+            entityManager: $entityManager,
+            seasonId: $seasonId,
+        );
+
+        $this->calculateScores(
+            eventIds: $eventIds,
+            entityManager: $entityManager,
+        );
+
+        return $this->redirectToRoute(
+            route: 'app_ranking_season_ranking',
+            parameters:[
+                'seasonId' => $seasonId,
+            ],
+        );
     }
 
 

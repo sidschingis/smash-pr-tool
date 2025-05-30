@@ -117,6 +117,12 @@ class RankingController extends AbstractController
                     ]),
                     'Import Events',
                 ),
+                new LinkData(
+                    $this->generateUrl('app_action_updatePlacings', [
+                        'seasonId' => $entity['id'],
+                    ]),
+                    'Recalculate Placing Scores',
+                ),
             ];
 
             $seasonData = new class (
