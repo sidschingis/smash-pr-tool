@@ -22,7 +22,7 @@
         <h2>Placements Export</h2>
         <div class="result-container">
             {% for placingContainer in placings %}
-            <span class="{{placingContainer.tier}} tier-container">[{{placingContainer.tier}}]
+            <div class="{{placingContainer.tier}} tier-container">[{{placingContainer.tier}}]
                 {% for placement in placingContainer.placements %}
                 <span>{{placement.placement}}</span>
                 <span>-</span>
@@ -30,7 +30,7 @@
                 <span>({{placement.score}})</span>
                 <span>,</span>
                 {% endfor %}
-            </span>
+            </div>
             {% endfor %}
         </div>
     </section>
