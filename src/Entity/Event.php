@@ -53,6 +53,11 @@ class Event
         return $this;
     }
 
+    public function getTier(): Tier
+    {
+        return $this->tier;
+    }
+
     public function setTier(Tier $tier): static
     {
         $this->tier = $tier;

@@ -4,6 +4,7 @@ namespace App\Action\Placement;
 
 use App\Entity\Event;
 use App\Entity\Placement;
+use App\Enum\Event\Tier;
 use App\Enum\Placement\Field;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -22,13 +23,23 @@ class CalculateScores
 
         $placements = $this->fetchPlacements($eventId);
 
+        $tier = $event->getTier();
+
+        $multiplier = match($tier) {
+            Tier::S => 2.5,
+            Tier::A => 2,
+            Tier::B => 1.5,
+            Tier::C => 1,
+            default => 1,
+        };
+
         foreach($placements as $placementEntity) {
             $placement = $placementEntity->getPlacement();
 
             $score = $this->calculateScore(
                 placement:$placement,
                 tournamentSize: $entrants,
-            ) * 10;
+            ) * 10 * $multiplier;
 
             $placementEntity->setScore((int) $score);
             $entityManager->persist($placementEntity);
